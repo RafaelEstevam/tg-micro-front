@@ -15,7 +15,7 @@ registerApplication({
     System.import(
       "@re/dashboard"
     ),
-  activeWhen: (location) => location.pathname === '/dashboard',
+  activeWhen: ['/app'],
 });
 
 // registerApplication({

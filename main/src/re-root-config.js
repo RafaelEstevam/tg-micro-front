@@ -6,7 +6,16 @@ registerApplication({
     System.import(
       "https://unpkg.com/single-spa-welcome/dist/single-spa-welcome.js"
     ),
-  activeWhen: ["/"],
+  activeWhen: (location) => location.pathname === '/',
+});
+
+registerApplication({
+  name: "@re/dashboard",
+  app: () =>
+    System.import(
+      "@re/dashboard"
+    ),
+  activeWhen: (location) => location.pathname === '/dashboard',
 });
 
 // registerApplication({

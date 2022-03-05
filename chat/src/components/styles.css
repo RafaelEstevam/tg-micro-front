@@ -1,0 +1,49 @@
+.CardWrapper{
+    padding: 15px;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+.ChatItem{
+    width: 50px;
+    margin: 20px 0px 0px 0px;
+    padding: 0px;
+};
+.ChatItem span{
+        display: flex;
+        flex-direction: column !important;
+        align-items: flex-end;
+    }
+.ChatItem img{
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 100%;
+}
+.ChatItem svg{
+    position: relative;
+    z-index: 2;
+    font-size: 20px;
+}
+
+.StyledChatWrapper{
+    flex-direction: column;
+    position: fixed;
+    z-index: 1000000;
+    height: 400px;
+    width: 400px;
+    bottom: 0px;
+    border-radius: 5px 5px 0px 0px;
+    right: calc(8.3% + 22px);
+}
+
+.ChatHeader{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 0px;
+    height: 15%;
+}

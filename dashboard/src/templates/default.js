@@ -7,6 +7,8 @@ import {
 } from '@material-ui/core';
 import clsx from 'clsx';
 
+import Parsel from 'single-spa-react/parcel';
+
 import { useSelector } from 'react-redux'
 
 import { HeaderStyle } from '../styles/header';
@@ -55,7 +57,12 @@ export default function PersistentDrawerLeft({ children }) {
                   </div>
                 </Grid>
                 <Grid item lg={1}>
-                  <ChatBar />
+
+                  <Parsel
+                    config={() => System.import('@re/chat')}
+                  />
+
+                  {/* <ChatBar /> */}
                 </Grid>
               </Grid>
 

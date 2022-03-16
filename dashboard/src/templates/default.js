@@ -46,7 +46,7 @@ export default function PersistentDrawerLeft({ children }) {
             className={`${clsx(classes.content, {
               [classes.contentShift]: open,
             })} main-background`}
-            style={{minHeight: '100vh'}}
+            style={{ minHeight: '100vh' }}
           >
             <div>
               <div className={classes.drawerHeader} />

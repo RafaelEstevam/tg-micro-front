@@ -1,5 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
-import {COLORS} from './colors';
+import { COLORS } from './colors';
 
 export default createGlobalStyle`
 
@@ -25,7 +25,7 @@ export default createGlobalStyle`
   }
 
   html{
-    font-size: ${(props) => 1 + ((props.theme.fontSize / 10) * 2)}rem;
+    font-size: ${(props) => 1 + ((props.theme.fontSize / 10) * 2)}rem !important;
     height: 100vh;
     body, #root{
       min-height: 100vh;
@@ -33,7 +33,7 @@ export default createGlobalStyle`
   }
 
   .main-font-type{
-    font-family: 'Impact';
+    font-family: 'Impact' !important;
   }
 
   .main-font-style{

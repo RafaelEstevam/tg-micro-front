@@ -142,7 +142,7 @@ export const ChatWrapper = () => {
                 {messages.map((item) => (
                     <MessageItemWrapper key={item.id} isYou={item.isYou}>
                         <MessageItem isYou={item.isYou}>
-                            <Typography style={{color: COLORS.light0}}>{item.text}</Typography>
+                            <Typography style={{ color: COLORS.light0 }}>{item.text}</Typography>
                             <Typography variant="subtitle2">{item.name}{' '}{item.date}</Typography>
                         </MessageItem>
                     </MessageItemWrapper>
@@ -193,11 +193,11 @@ export const ChatBar = ({ children, height, className }) => {
 
     return (
         <>
-            <CustomCard className="second-background main-text" style={{position: 'fixed', marginTop: '20px', minHeight: 'calc(100vh - 110px)'}}>
+            <CustomCard className="second-background main-text" style={{ position: 'fixed', marginTop: '20px', minHeight: 'calc(100vh - 110px)' }}>
                 <CardWrapper>
                     <GamingTitle>Chat</GamingTitle>
                     {chatOnline?.map((item) => (
-                        <ChatItem type={item.type} key={item.type} onClick={() => handleDrawerOpen(item)}>
+                        <ChatItem type={item.type} onClick={() => handleDrawerOpen(item)}>
                             {item.type === 'teacher' && (
                                 <School />
                             )}

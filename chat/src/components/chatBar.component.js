@@ -14,28 +14,6 @@ import { GamingTitle } from './styles.component';
 
 import { Close, School, Send } from '@material-ui/icons'
 
-const StyledChatWrapper = styled(Card)`
-    display: ${props => props.show ? 'flex' : 'none'};
-    flex-direction: column;
-    position: fixed;
-    z-index: 1000000;
-    height: 400px;
-    width: 400px;
-    bottom: 0px;
-    border-radius: 5px 5px 0px 0px;
-    right: calc(8.3% + 22px);
-    
-`;
-
-const ChatHeader = styled(Card)`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-radius: 0px;
-    height: 15%;
-
-`
-
 const MessagesWrapper = styled('div')`
     height: 70%;
     overflow: hidden;
@@ -96,19 +74,19 @@ export const ChatWrapper = () => {
         <div className={`StyledChatWrapper ${accessibility.nightMode && 'nightMode'}`} show={chat.showChat}>
             <div className="ChatHeader second-background">
                 <CardContent>
-                    <Typography className="primary-text"><b>{chat?.dataChat?.name}</b></Typography>
-                    <Typography className="main-text" variant="subtitle2">{chat?.dataChat?.type}</Typography>
+                    <p className="primary-text"><b>{chat?.dataChat?.name}</b></p>
+                    <p className="main-text" variant="subtitle2">{chat?.dataChat?.type}</p>
                 </CardContent>
-                <IconButton onClick={() => handleCloseChat()}>
+                <button onClick={() => handleCloseChat()}>
                     <Close />
-                </IconButton>
+                </button>
             </div>
             <MessagesWrapper className="main-background">
                 {messages.map((item) => (
                     <MessageItemWrapper key={item.id} isYou={item.isYou}>
                         <MessageItem isYou={item.isYou}>
-                            <Typography style={{color: "#ffffff"}}>{item.text}</Typography>
-                            <Typography variant="subtitle2">{item.name}{' '}{item.date}</Typography>
+                            <p style={{ color: "#ffffff" }}>{item.text}</p>
+                            <p variant="subtitle2">{item.name}{' '}{item.date}</p>
                         </MessageItem>
                     </MessageItemWrapper>
                 ))}
@@ -123,9 +101,9 @@ export const ChatWrapper = () => {
                     variant="outlined"
                     size="small"
                 />
-                <Button size="large" className="main-text">
+                <button size="large" className="main-text">
                     <Send />
-                </Button>
+                </button>
             </MessageText>
         </div>
     )
@@ -135,6 +113,7 @@ export const ChatBar = ({ children, height, className }) => {
 
     const classes = HeaderStyle();
     const dispatch = useDispatch();
+    const { showChat } = useSelector(state => state.chat);
     const [chatOnline, setChatOnline] = useState([]);
     const [open, setOpen] = useState(false);
 
@@ -142,11 +121,6 @@ export const ChatBar = ({ children, height, className }) => {
         dispatch({ type: 'SET_CHAT', chat: { showChat: true, dataChat: chat } });
         // setOpen(true);
     };
-
-    // const handleDrawerClose = () => {
-    //     dispatch({ type: 'SET_CHAT', chat: {showData: false, dataChat: {}} });
-    //     // setOpen(false);
-    // };
 
     const handleChatOnline = () => {
         setChatOnline([{ id: 1, name: 'Aluno X', type: 'student' }, { id: 2, name: 'Professor X', type: 'teacher' }])
@@ -158,9 +132,9 @@ export const ChatBar = ({ children, height, className }) => {
 
     return (
         <>
-            <CustomCard className="second-background main-text" style={{position: 'fixed', marginTop: '20px', minHeight: 'calc(100vh - 110px)'}}>
+            <CustomCard className="main-text" style={{ position: 'fixed', marginTop: '20px', minHeight: 'calc(100vh - 110px)', border: '3px solid #ffffff', borderRadius: '20px' }}>
                 <div className="CardWrapper">
-                    <h6>Chat</h6>
+                    <h6 variant="h6" style={{ color: "#fff" }}>Chat</h6>
                     {chatOnline?.map((item) => (
                         <div className="ChatItem" type={item.type} key={item.type} onClick={() => handleDrawerOpen(item)}>
                             {item.type === 'teacher' && (
@@ -171,6 +145,8 @@ export const ChatBar = ({ children, height, className }) => {
                     ))}
                 </div>
             </CustomCard>
+            {showChat && <ChatWrapper />}
+
         </>
     )
 }

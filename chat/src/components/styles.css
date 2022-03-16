@@ -1,3 +1,12 @@
+
+*{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    /* font-size: 16px; */
+    /* font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"; */
+  }
+
 .CardWrapper{
     padding: 15px;
     display: flex;
@@ -11,6 +20,7 @@
     width: 50px;
     margin: 20px 0px 0px 0px;
     padding: 0px;
+    position: relative;
 };
 .ChatItem span{
         display: flex;
@@ -27,6 +37,8 @@
     position: relative;
     z-index: 2;
     font-size: 20px;
+    fill: #fff;
+    position: absolute
 }
 
 .StyledChatWrapper{

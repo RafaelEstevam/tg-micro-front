@@ -1,5 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
-import {COLORS} from './colors';
+import { COLORS } from './colors';
 
 export default createGlobalStyle`
 
@@ -8,6 +8,7 @@ export default createGlobalStyle`
     padding: 0px;
     box-sizing: border-box;
     font-size: 16px;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol" !important;
     // opacity: ${(props) => 1 - ((props.theme.brightness / 100) * 2)}; /*brilho*/
     // filter: brightness(${(props) => 1 + ((props.theme.brightness / 100))}) contrast(${(props) => 1 + ((props.theme.contrast / 100))});
   }
@@ -111,15 +112,16 @@ export default createGlobalStyle`
     
   }
 
-  .CardWrapper{
-    padding: 15px;
-    display: flex;
-    width: 100%;
-    height: 100%;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-  }
+  // .CardWrapper{
+    // padding: 15px;
+    // display: flex;
+    // width: 100%;
+    // height: 100%;
+    // flex-direction: column;
+    // align-items: center;
+    // justify-content: space-between;
+    // background: ${COLORS.dark1}
+  // }
 
   .StyledChatWrapper{
     flex-direction: column;

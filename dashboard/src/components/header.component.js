@@ -35,6 +35,8 @@ import styled from 'styled-components';
 
 import { COLORS } from '../styles/colors';
 
+import { API, getUserIdInStorage } from '../services/api'
+
 const StudentComponent = styled('div')`
   display: flex;
   align-items: center;
@@ -85,13 +87,22 @@ const Header = ({ open, handleDrawerOpen, handleDrawerClose }) => {
   const history = useHistory();
   const classes = HeaderStyle();
   const theme = useTheme();
+  const userid = getUserIdInStorage();
 
   const decode = useSelector(state => state.decode);
   const accessibility = useSelector(state => state.accessibility);
 
-  const handleLogout = () => {
-    resetStorage()
-    history.push("/");
+  const handleLogout = async () => {
+
+    try {
+      await API.get(`/logout/${userid}`)
+      resetStorage();
+      history.push("/app");
+    } catch (error) {
+      console.log(error)
+    }
+
+
   }
 
   return (
@@ -127,7 +138,7 @@ const Header = ({ open, handleDrawerOpen, handleDrawerClose }) => {
                 alunox@alunox.com
               </Typography>
             </StudentWrapper>
-            <IconButton color="primary">
+            <IconButton color="primary" onClick={() => handleLogout()}>
               <PowerSettingsNew />
             </IconButton>
           </StudentComponent>
@@ -195,16 +206,16 @@ const Header = ({ open, handleDrawerOpen, handleDrawerClose }) => {
           </CustomList>
         </div>
         <div className="mobile">
-        <StudentWrapper style={{padding: '10px', background: COLORS.dark0, marginRight: '0px', alignItems: 'flex-start'}}>
-          <Typography className="primary-text mobile">
-            <b>
-              Aluno X
-            </b>
-          </Typography>
-          <Typography variant="subtitle2" className="main-text mobile">
-            alunox@alunox.com
-          </Typography>
-        </StudentWrapper>
+          <StudentWrapper style={{ padding: '10px', background: COLORS.dark0, marginRight: '0px', alignItems: 'flex-start' }}>
+            <Typography className="primary-text mobile">
+              <b>
+                Aluno X
+              </b>
+            </Typography>
+            <Typography variant="subtitle2" className="main-text mobile">
+              alunox@alunox.com
+            </Typography>
+          </StudentWrapper>
         </div>
         {/* <Divider /> */}
       </CustomDrawer>

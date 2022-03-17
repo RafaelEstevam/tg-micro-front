@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
-import {getTokenInStorage, decodeToken} from './services/api'
+import { getTokenInStorage, decodeToken } from './services/api'
 
 import Dashboard from './pages/Dashboard'
 import Login from './pages/Login'
@@ -13,7 +13,7 @@ import UserList from './pages/UserList'
 import CategoriesList from './pages/CategoriesList'
 import DefaultLayout from './templates/default'
 
-const AdminRoutes = ({ component: Component, auth,  ...attrs }) => {
+const AdminRoutes = ({ component: Component, auth, ...attrs }) => {
 
   const token = getTokenInStorage();
   const permission = decodeToken(token).permission === auth;
@@ -32,10 +32,10 @@ const AdminRoutes = ({ component: Component, auth,  ...attrs }) => {
   )
 }
 
-const PrivateRoute = ({ component: Component, auth,  ...attrs }) => {
+const PrivateRoute = ({ component: Component, auth, ...attrs }) => {
 
-  // const token = getTokenInStorage();
-  const token = true;
+  const token = getTokenInStorage();
+  // const token = true;
 
   return token ? (
     <Route
@@ -47,7 +47,7 @@ const PrivateRoute = ({ component: Component, auth,  ...attrs }) => {
       )}
     />
   ) : (
-    <Redirect to="/404" />
+    <Redirect to="/app/404" />
   )
 }
 

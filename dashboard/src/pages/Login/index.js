@@ -3,8 +3,8 @@ import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch } from 'react-redux';
 import { useSnackbar } from 'notistack';
-import axios from 'axios';
-import { setTokenInStorage, decodeToken } from '../../services/api';
+// import axios from 'axios';
+import { setTokenInStorage, decodeToken, API, setIdInStorage } from '../../services/api';
 
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -44,12 +44,21 @@ export default function SignIn() {
   const [password, setPassword] = useState();
 
   const handleSubmit = async () => {
-    const data ={
+    const data = {
       email,
       password
     }
 
-    history.push("/app/dashboard");
+    try {
+      const user = await API.post("/login", data);
+      setTokenInStorage('token');
+      setIdInStorage(user.data["_id"]);
+      history.push("/app/dashboard");
+
+    } catch (error) {
+      console.log(error)
+    }
+
 
     // axios.post(process.env.REACT_APP_API + '/token', data).then((response) => {
     //   dispatch({type: 'SET_TOKEN', token: response.data.token});
@@ -60,7 +69,7 @@ export default function SignIn() {
     // }).catch((e) => {
     //   enqueueSnackbar('Não foi possível fazer login. Tente novamente.', {variant: "error"});
     // });
-    
+
   }
 
   return (
@@ -100,7 +109,7 @@ export default function SignIn() {
             onChange={(e) => setPassword(e.target.value)}
             autoComplete="current-password"
           />
-          
+
           <Button
             fullWidth
             variant="contained"

@@ -5,6 +5,7 @@ import avatar from '../assets/avatar.jpg';
 import './styles.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { COLORS } from '../styles/colors';
+import chatHook from '../hooks/chatHook';
 
 // import { COLORS } from '../styles/colors';
 
@@ -137,25 +138,9 @@ export const ChatWrapper = ({ theme }) => {
 
 export const ChatBar = ({ theme }) => {
 
-    const classes = HeaderStyle();
-    const dispatch = useDispatch();
     const { showChat } = useSelector(state => state.chat);
-    const [chatOnline, setChatOnline] = useState([]);
+    const { chatOnline, setChatOnline, handleDrawerOpen } = chatHook();
     const { nightMode } = theme;
-
-
-    const handleDrawerOpen = (chat) => {
-        dispatch({ type: 'SET_CHAT', chat: { showChat: true, dataChat: chat } });
-        // setOpen(true);
-    };
-
-    const handleChatOnline = () => {
-        setChatOnline([{ id: 1, name: 'Aluno X', type: 'student' }, { id: 2, name: 'Professor X', type: 'teacher' }])
-    }
-
-    useEffect(() => {
-        handleChatOnline();
-    }, []);
 
     return (
         <>

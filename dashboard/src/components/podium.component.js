@@ -49,12 +49,14 @@ const StyledFirstPosition = styled(Position)`
 const StyledSecondPosition = styled(Position)`
     width: 28%;
     min-height:60px;
-    background: ${COLORS.secondary};
+    // background: ${COLORS.secondary};
+    border: 2px solid ${COLORS.primary};
 `
 const StyledThirdPosition = styled(Position)`
     width: 28%;
     min-height: 50px;
-    background: ${COLORS.dark0};
+    border: 2px solid ${COLORS.primary};
+    // background: ${COLORS.dark0};
 `;
 
 const AchievmentsItem = styled('div')`
@@ -77,13 +79,13 @@ export default function Podium({ podium }) {
                 <Tooltip title={podium?.second?.student}>
                     <StyledSecondPosition>
                         <AchievmentsItem><img src={avatar2} /></AchievmentsItem>
-                        <Typography>2º</Typography>
+                        <Typography className="main-text">2º</Typography>
                     </StyledSecondPosition>
                 </Tooltip>
 
                 <Tooltip title={podium?.first?.student}>
                     <StyledFirstPosition>
-                        <Star style={{color: COLORS.light0}} />
+                        <Star style={{ color: COLORS.light0 }} />
                         <AchievmentsItem><img src={avatar} /></AchievmentsItem>
                         <Typography>1º</Typography>
                     </StyledFirstPosition>
@@ -93,7 +95,7 @@ export default function Podium({ podium }) {
 
                     <StyledThirdPosition>
                         <AchievmentsItem><img src={avatar3} /></AchievmentsItem>
-                        <Typography>3º</Typography>
+                        <Typography className="main-text">3º</Typography>
                     </StyledThirdPosition>
                 </Tooltip>
 

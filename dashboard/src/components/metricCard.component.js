@@ -1,6 +1,6 @@
 import { Paper, Typography } from '@material-ui/core';
 import styled from 'styled-components';
-import {COLORS} from '../styles/colors';
+import { COLORS } from '../styles/colors';
 import { useSelector } from 'react-redux';
 
 const MetricTitle = styled(Typography)`
@@ -11,7 +11,7 @@ const MetricTitle = styled(Typography)`
 const MetricContent = styled(Typography)`
     padding: 20px;
     border-radius: 100%;
-    color:${props => props.accessibility ? COLORS.warning : COLORS.light0 + '60'};
+    color:${props => props.accessibility ? COLORS.warning : COLORS.warning};
     svg {
         font-size: 120px
     }
@@ -42,7 +42,7 @@ const MetricComponent = styled(Paper)`
     flex-direction: column;
     align-items: center;
     height: ${props => props.height};
-    background: ${props => props.accessibility ? 'transparent' : COLORS.primary };
+    background: ${props => props.accessibility ? 'transparent' : COLORS.primary};
     // box-shadow: 0px 0px 18px ${COLORS.primary};
 `;
 
@@ -52,7 +52,7 @@ export default function Metric({ height = '180px', background = '#fc0', icon, ti
 
     return (
         <MetricComponent elevation={0} height={height} accessibility={accessibility.nightMode}>
-            <div style={{position: 'relative', zIndex: '3', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', height: '100%', justifyContent: 'space-between'}}>
+            <div style={{ position: 'relative', zIndex: '3', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', height: '100%', justifyContent: 'space-between' }}>
                 <MetricTitle>{title}</MetricTitle>
                 <MetricContent accessibility={accessibility.nightMode}>
                     {icon}

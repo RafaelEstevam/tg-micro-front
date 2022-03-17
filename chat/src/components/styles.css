@@ -37,19 +37,20 @@
     position: relative;
     z-index: 2;
     font-size: 20px;
-    fill: #fff;
+    fill: #39A0DA;
     position: absolute
 }
 
 .StyledChatWrapper{
     flex-direction: column;
     position: fixed;
-    z-index: 1000000;
+    z-index: 10;
     height: 400px;
     width: 400px;
     bottom: 0px;
-    border-radius: 5px 5px 0px 0px;
+    border-radius: 20px 20px 0px 0px;
     right: calc(8.3% + 22px);
+    overflow: hidden;
 }
 
 .ChatHeader{
@@ -58,4 +59,5 @@
     justify-content: space-between;
     border-radius: 0px;
     height: 15%;
+    padding-right: 15px;
 }

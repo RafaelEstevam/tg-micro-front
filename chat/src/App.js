@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from 'react-redux';
 import { ChatBar } from './components/chatBar.component';
 
@@ -46,12 +46,18 @@ const theme = createTheme({
 
 const App = () => {
 
-    const accessibility = useSelector(state => state.accessibility);
+    const [accessibility, setAccessibility] = useState({ nightMode: true });
+
+    useEffect(() => {
+        window.addEventListener('handleAccessibility', (e) => {
+            setAccessibility(e.detail);
+        });
+    }, []);
 
     return (
         <ThemeProvider theme={theme}>
             <GlobalStyle theme={accessibility} />
-            <ChatBar />
+            <ChatBar theme={accessibility} />
         </ThemeProvider>
     )
 }

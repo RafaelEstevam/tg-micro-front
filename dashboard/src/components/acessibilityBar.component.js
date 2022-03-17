@@ -38,9 +38,15 @@ export default function AccessibilityBar() {
     }
 
     const handleNightMode = () => {
+
         if (nightMode) {
+            const customHandleNightMode = new CustomEvent('handleAccessibility', { detail: { nightMode: false } });
+            dispatchEvent(customHandleNightMode);
             setNightMode(false);
+
         } else {
+            const customHandleNightMode = new CustomEvent('handleAccessibility', { detail: { nightMode: true } });
+            dispatchEvent(customHandleNightMode);
             setNightMode(true);
         }
     }

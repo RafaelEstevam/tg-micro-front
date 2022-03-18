@@ -8,6 +8,7 @@ const UserSchema = new mongoose.Schema({
     online: Boolean,
     type: String,
     doc: String,
+    connection_id: String,
     recieve_sms: Boolean,
     recieve_email: Boolean,
     recieve_call: Boolean,

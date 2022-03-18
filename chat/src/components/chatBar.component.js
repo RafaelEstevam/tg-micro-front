@@ -89,15 +89,22 @@ export const ChatWrapper = ({ theme }) => {
     const accessibility = useSelector(state => state.accessibility);
     const [messages, setMessages] = useState([]);
     const { nightMode } = theme;
+    const { usersWebSocket } = chatHook();
 
     const handleCloseChat = () => {
         dispatch({ type: 'SET_CHAT', chat: { showChat: false, dataChat: {} } });
     }
 
     useEffect(() => {
-        setMessages(loadMessages);
-        console.log(chat);
-    }, [chat])
+        usersWebSocket.on('reload_chat_connection', (params) => {
+            console.log(params);
+        })
+    }, []);
+
+    // useEffect(() => {
+    //     setMessages(loadMessages);
+    //     console.log(chat);
+    // }, [chat]);
 
     return (
         <div className={`StyledChatWrapper ${nightMode && 'nightMode'}`} show={chat.showChat}>

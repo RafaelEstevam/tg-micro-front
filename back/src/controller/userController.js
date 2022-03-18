@@ -121,6 +121,16 @@ module.exports = {
     async getUsersOnline(req, res) {
         let users = await User.find({ online: { "$eq": true } })
         return res.status(200).json(users);
+    },
+
+    async refreshConnection(params) {
+
+        const { user_id, connection_id } = params;
+
+        let user = await User.findById(user_id);
+        if (user) {
+            await User.findByIdAndUpdate(user_id, { connection_id });
+        }
     }
 }
 

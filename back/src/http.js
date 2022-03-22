@@ -16,7 +16,8 @@ const io = socketIo(server, {
   }
 });
 
-mongoose.connect('mongodb+srv://tg:NxXEECNTK70X0a2O@tg.eftsh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
+// mongoose.connect('mongodb+srv://tg:NxXEECNTK70X0a2O@tg.eftsh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
+mongoose.connect('mongodb://localhost:27017/test', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
@@ -27,10 +28,10 @@ io.on("connection", (socket) => {
   if (interval) {
     clearInterval(interval);
   }
-  interval = setInterval(() => getApiAndEmit(socket), 1000);
+  // interval = setInterval(() => getApiAndEmit(socket), 1000);
   socket.on("disconnect", () => {
     // console.log("Client disconnected");
-    clearInterval(interval);
+    // clearInterval(interval);
   });
 });
 

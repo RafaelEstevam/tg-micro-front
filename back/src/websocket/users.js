@@ -1,4 +1,6 @@
 const userController = require("../controller/userController");
+const User = require("../schemas/userService");
+const Talk = require("../schemas/talkService");
 const { io } = require('../http');
 
 io.on('connect', (socket) => {
@@ -10,6 +12,21 @@ io.on('connect', (socket) => {
     const connection_id = socket.id;
 
     userController.refreshConnection({ user_id, connection_id });
+
+  });
+
+  socket.on('send_message', async (params) => {
+    const {id, text, from} = params;
+
+    let user = await User.findById(id);
+    const created_at = new Date();
+
+    const postMessage = {from_id: from, text, to_id: id, created_at};
+
+    const talk = await Talk.create(postMessage);
+    talk.save();
+
+    io.to(user.connection_id).emit('recieve_message', (params));
 
   });
 

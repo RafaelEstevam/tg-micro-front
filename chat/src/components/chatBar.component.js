@@ -7,12 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { COLORS } from '../styles/colors';
 import chatHook from '../hooks/chatHook';
 
-// import { COLORS } from '../styles/colors';
-
-import { HeaderStyle } from '../styles/header';
-
 import CustomCard from './card.component';
-import { GamingTitle } from './styles.component';
 
 import { Close, School, Send } from '@material-ui/icons'
 
@@ -36,11 +31,11 @@ const MessageItemWrapper = styled('div')`
     width: 100%;
     margin-bottom: 15px;
     display: flex;
-    justify-content: ${props => props.isYou ? 'flex-end' : 'flex-start'};
+    justify-content: ${props => props.isYou ? 'flex-start' : 'flex-end'};
 `
 
 const MessageItem = styled('div')`
-    background: ${props => props.isYou ? '#da3941' : '#39A0DA'};
+    background: ${props => props.isYou ? '#aaa' : '#da3941'};
     padding: 10px;
     border-radius: 10px;
     max-width: 70%;
@@ -71,40 +66,63 @@ const CustomButton = styled('button')`
 
 `
 
-const loadMessages = [
-    { id: 1, text: 'Mensagem', isYou: false, date: '20-06-2021 10:00', name: 'Nome 1' },
-    { id: 2, text: 'Mensagem', isYou: true, date: '20-06-2021 12:00', name: 'Nome 2' },
-    { id: 3, text: 'Mensagem', isYou: true, date: '20-06-2021 10:00', name: 'Nome 2' },
-    { id: 4, text: 'Mensagem', isYou: false, date: '20-06-2021 14:00', name: 'Nome 1' },
-    { id: 5, text: 'Mensagem', isYou: true, date: '20-06-2021 14:30', name: 'Nome 2' },
-    { id: 6, text: 'Mensagem', isYou: false, date: '20-06-2021 15:00', name: 'Nome 1' },
-    { id: 7, text: 'Mensagem', isYou: true, date: '20-06-2021 10:00', name: 'Nome 2' },
-];
-
-
 export const ChatWrapper = ({ theme }) => {
 
     const dispatch = useDispatch();
-    const chat = useSelector(state => state.chat);
+    const {chat, showChat} = useSelector(state => state.chat);
     const accessibility = useSelector(state => state.accessibility);
+    const [message, setMessage] = useState([]);
     const [messages, setMessages] = useState([]);
     const { nightMode } = theme;
-    const { usersWebSocket } = chatHook();
+    const { usersWebSocket, user_id, API } = chatHook();
+    const [userMessage, setUserMessage] = useState('');
 
     const handleCloseChat = () => {
         dispatch({ type: 'SET_CHAT', chat: { showChat: false, dataChat: {} } });
-    }
+    };
+
+    const submitMessage = (message) => {
+        const id = chat.dataChat["_id"];
+        const {name, email} = chat.dataChat;
+
+        const content = {
+            id: id,
+            from: user_id,
+            text: message,
+            name,
+            email
+        };
+
+        setMessages([...messages, ...[content]]);
+        usersWebSocket.emit('send_message', (content));
+    };
+
+    useEffect(() => {
+        if(userMessage.text){
+            setMessages([...messages, ...[userMessage]]);
+        }
+    }, [userMessage]);
 
     useEffect(() => {
         usersWebSocket.on('reload_chat_connection', (params) => {
             console.log(params);
-        })
+        });
+
+        usersWebSocket.on('recieve_message', (params) => {
+            setUserMessage(params);
+        });
+        
     }, []);
 
-    // useEffect(() => {
-    //     setMessages(loadMessages);
-    //     console.log(chat);
-    // }, [chat]);
+    useEffect(() => {
+
+        try{
+            API.get('/talk/')
+        }catch(e){
+            console.log(e)
+        }
+
+    }, [showChat, chat])
 
     return (
         <div className={`StyledChatWrapper ${nightMode && 'nightMode'}`} show={chat.showChat}>
@@ -119,8 +137,8 @@ export const ChatWrapper = ({ theme }) => {
             </div>
             <MessagesWrapper className="main-background">
                 {messages.map((item) => (
-                    <MessageItemWrapper key={item.id} isYou={item.isYou}>
-                        <MessageItem isYou={item.isYou}>
+                    <MessageItemWrapper key={item} isYou={item.id === user_id}>
+                        <MessageItem isYou={item.id === user_id}>
                             <p style={{ color: "#ffffff" }}>{item.text}</p>
                             <p>{item.name}{' '}{item.date}</p>
                         </MessageItem>
@@ -132,9 +150,11 @@ export const ChatWrapper = ({ theme }) => {
                     placeholder="Mensagem"
                     name="message"
                     required
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
                 />
                 <Tooltip title="Enviar mensagem">
-                    <CustomButton nightMode={nightMode}>
+                    <CustomButton nightMode={nightMode} onClick={() => submitMessage(message)} >
                         <Send />
                     </CustomButton>
                 </Tooltip>
@@ -146,7 +166,7 @@ export const ChatWrapper = ({ theme }) => {
 export const ChatBar = ({ theme }) => {
 
     const { showChat } = useSelector(state => state.chat);
-    const { chatOnline, setChatOnline, handleDrawerOpen } = chatHook();
+    const { chatOnline, setChatOnline, handleDrawerOpen, API } = chatHook();
     const { nightMode } = theme;
 
     return (

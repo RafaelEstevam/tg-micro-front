@@ -63,7 +63,9 @@ const chatHook = () => {
     usersWebSocket,
     chatOnline,
     setChatOnline,
-    handleDrawerOpen
+    handleDrawerOpen,
+    user_id,
+    API
   }
 }
 

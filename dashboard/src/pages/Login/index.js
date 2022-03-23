@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch } from 'react-redux';
 import { useSnackbar } from 'notistack';
 // import axios from 'axios';
-import { setTokenInStorage, decodeToken, API, setIdInStorage } from '../../services/api';
+import { setTokenInStorage, decodeToken, API, setIdInStorage, setUserDataInStorage } from '../../services/api';
 
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -53,6 +53,8 @@ export default function SignIn() {
       const user = await API.post("/login", data);
       setTokenInStorage('token');
       setIdInStorage(user.data["_id"]);
+      setUserDataInStorage(user.data);
+
       history.push("/app/dashboard");
 
     } catch (error) {

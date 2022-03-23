@@ -2,6 +2,7 @@ const { Router } = require("express");
 const userController = require("./controller/userController");
 const termController = require("./controller/termController");
 const historicController = require("./controller/historicController");
+const talkController = require("./controller/talkController");
 
 const routes = Router();
 
@@ -20,7 +21,7 @@ routes.get('/usersOnline', userController.getUsersOnline);
 routes.post('/term/new', termController.post);
 routes.get('/term/get/last', termController.getLastTerm);
 
-routes.get('/talk/:from/:to', termController.getLastTerm);
+routes.get('/talk/:from/:to', talkController.getTalkByToFrom);
 
 routes.get('/historics', historicController.getHistorics);
 routes.get('/historics/:user_id', historicController.getHistoricsByUser);

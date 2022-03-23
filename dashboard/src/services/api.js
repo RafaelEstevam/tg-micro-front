@@ -25,6 +25,10 @@ const setIdInStorage = (id) => {
   localStorage.setItem("userid", id);
 }
 
+const setUserDataInStorage = (user) => {
+  localStorage.setItem('userData', JSON.stringify(user));
+}
+
 const getTokenInStorage = () => {
   return localStorage.getItem("token");
 }
@@ -53,7 +57,8 @@ function resetStorage() {
   localStorage.removeItem("token");
   localStorage.removeItem("username");
   localStorage.removeItem("permission");
+  localStorage.removeItem("userData");
   localStorage.removeItem("id");
 }
 
-export { API, setTokenInStorage, getTokenInStorage, decodeToken, resetStorage, setIdInStorage, getUserIdInStorage };
+export { API, setTokenInStorage, getTokenInStorage, decodeToken, resetStorage, setIdInStorage, getUserIdInStorage, setUserDataInStorage };

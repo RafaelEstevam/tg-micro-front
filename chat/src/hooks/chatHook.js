@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import socketIOClient from "socket.io-client";
-import { API, getUserIdInStorage } from '../services/api';
+import { API, getUserIdInStorage, getUserDataInStorage } from '../services/api';
 
 import { UsersWebSocket } from '../websocket/user';
 
@@ -9,8 +9,16 @@ let usersWebSocket = new UsersWebSocket();
 
 const chatHook = () => {
   const dispatch = useDispatch();
+  const chat = useSelector(state => state.chat);
+  const { showChat } = useSelector(state => state.chat);
+
   const user_id = getUserIdInStorage();
+  const user_data = getUserDataInStorage();
   const [chatOnline, setChatOnline] = useState([]);
+  const [userMessage, setUserMessage] = useState('');
+  const [message, setMessage] = useState([]);
+  const [messages, setMessages] = useState([]);
+
 
   const handleChatOnline = async () => {
     try {
@@ -34,6 +42,60 @@ const chatHook = () => {
   //     setResponse(data);
   //   });
   // }, []);
+
+  const handleCloseChat = () => {
+    dispatch({ type: 'SET_CHAT', chat: { showChat: false, dataChat: {} } });
+};
+
+  const submitMessage = (message) => {
+      const id = chat.dataChat["_id"];
+      const {name, email} = user_data;
+
+      const content = {
+          id: id,
+          from_id: user_id,
+          text: message,
+          name,
+          email
+      };
+
+      setMessages([...messages, ...[content]]);
+      usersWebSocket.emit('send_message', (content));
+  };
+
+  const getTalk = async () => {
+      const to_id = chat?.dataChat["_id"];
+      const from_id = user_id;
+      try{
+          const {data} = await API.get(`/talk/${from_id}/${to_id}`);
+          setMessages(data);
+      }catch(e){
+          console.log(e)
+      }
+  }
+
+  const filterChatOnline = chatOnline?.filter((item) => {return item["_id"] !== user_id })
+
+  useEffect(() => {
+      if(userMessage.text){
+          setMessages([...messages, ...[userMessage]]);
+      }
+  }, [userMessage]);
+
+  useEffect(() => {
+      usersWebSocket.on('reload_chat_connection', (params) => {
+          console.log(params);
+      });
+
+      usersWebSocket.on('recieve_message', (params) => {
+          setUserMessage(params);
+      });
+      
+  }, []);
+
+  useEffect(() => {
+      getTalk();
+  }, [chat])
 
   useEffect(() => {
 
@@ -64,8 +126,20 @@ const chatHook = () => {
     chatOnline,
     setChatOnline,
     handleDrawerOpen,
+    submitMessage,
+    handleCloseChat,
     user_id,
-    API
+    user_data,
+    API,
+    userMessage,
+    setUserMessage,
+    chat,
+    message,
+    setMessage,
+    messages,
+    setMessages,
+    showChat,
+    filterChatOnline
   }
 }
 

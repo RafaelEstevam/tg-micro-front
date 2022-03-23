@@ -16,12 +16,12 @@ io.on('connect', (socket) => {
   });
 
   socket.on('send_message', async (params) => {
-    const {id, text, from} = params;
+    const {id, text, from_id, name, email} = params;
 
     let user = await User.findById(id);
     const created_at = new Date();
 
-    const postMessage = {from_id: from, text, to_id: id, created_at};
+    const postMessage = {name, email, from_id, text, to_id: id, created_at};
 
     const talk = await Talk.create(postMessage);
     talk.save();

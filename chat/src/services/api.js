@@ -33,6 +33,10 @@ const getUserIdInStorage = () => {
   return localStorage.getItem("userid");
 }
 
+const getUserDataInStorage = () => {
+  return JSON.parse(localStorage.getItem("userData"));
+}
+
 function decodeToken(token) {
   var base64Url = token.split('.')[1];
   var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -56,4 +60,4 @@ function resetStorage() {
   localStorage.removeItem("id");
 }
 
-export { API, setTokenInStorage, getTokenInStorage, decodeToken, resetStorage, setIdInStorage, getUserIdInStorage };
+export { API, setTokenInStorage, getTokenInStorage, decodeToken, resetStorage, setIdInStorage, getUserIdInStorage, getUserDataInStorage };

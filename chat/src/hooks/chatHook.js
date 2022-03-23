@@ -18,6 +18,7 @@ const chatHook = () => {
   const [userMessage, setUserMessage] = useState('');
   const [message, setMessage] = useState([]);
   const [messages, setMessages] = useState([]);
+  const [showUserWriting, setShowUserWriting] = useState(false);
 
 
   const handleChatOnline = async () => {
@@ -76,6 +77,25 @@ const chatHook = () => {
 
   const filterChatOnline = chatOnline?.filter((item) => {return item["_id"] !== user_id })
 
+
+
+  const userIsWriting = (value) => {
+    if(value.length > 5){
+      const {dataChat} = chat;
+      const remove = true;
+
+      setTimeout(() => {
+        usersWebSocket.emit('user_is_writing', dataChat)
+      }, 1000);
+  
+      // setTimeout(() => {
+      //   usersWebSocket.emit('user_is_writing', {dataChat, remove})
+      //   clearInterval(timeout);
+      // }, 1000);
+    }
+  }
+
+
   useEffect(() => {
       if(userMessage.text){
           setMessages([...messages, ...[userMessage]]);
@@ -88,8 +108,13 @@ const chatHook = () => {
       });
 
       usersWebSocket.on('recieve_message', (params) => {
-          setUserMessage(params);
+        setUserMessage(params);
       });
+
+      usersWebSocket.on('user_writing', (params) => {
+        setShowUserWriting(true);
+        console.log(params);
+      })
       
   }, []);
 
@@ -139,7 +164,10 @@ const chatHook = () => {
     messages,
     setMessages,
     showChat,
-    filterChatOnline
+    filterChatOnline,
+    userIsWriting,
+    showUserWriting, 
+    setShowUserWriting
   }
 }
 

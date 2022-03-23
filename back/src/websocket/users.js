@@ -30,6 +30,13 @@ io.on('connect', (socket) => {
 
   });
 
+  socket.on('user_is_writing', async (params) => {
+    const id = params["_id"];
+    let user = await User.findById(id, {connection_id: 1, _id: 0});
+    console.log(user);
+    io.to(user.connection_id).emit('user_writing', (params));
+  })
+
   socket.on('user_disconnected', () => {
     io.emit('reload_users_online');
   });

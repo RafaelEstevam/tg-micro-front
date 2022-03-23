@@ -81,7 +81,8 @@ export const ChatWrapper = ({ theme }) => {
         message,
         setMessage,
         messages,
-        // setMessages
+        userIsWriting,
+        showUserWriting        // setMessages
     } = chatHook();
     // const [userMessage, setUserMessage] = useState('');
 
@@ -161,6 +162,9 @@ export const ChatWrapper = ({ theme }) => {
                         </MessageItem>
                     </MessageItemWrapper>
                 ))}
+                {showUserWriting && (
+                    <p>Usuário está escrevendo.</p>
+                )}
             </MessagesWrapper>
             <MessageText className="second-background">
                 <CustomInput
@@ -168,7 +172,10 @@ export const ChatWrapper = ({ theme }) => {
                     name="message"
                     required
                     value={message}
-                    onChange={(e) => setMessage(e.target.value)}
+                    onChange={(e) => {
+                        setMessage(e.target.value);
+                        userIsWriting(e.target.value);
+                    }}
                 />
                 <Tooltip title="Enviar mensagem">
                     <CustomButton nightMode={nightMode} onClick={() => submitMessage(message)} >

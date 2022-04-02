@@ -49,7 +49,7 @@
     width: 400px;
     bottom: 0px;
     border-radius: 20px 20px 0px 0px;
-    right: calc(8.3% + 22px);
+    right: calc(8.3% + 5px);
     overflow: hidden;
 }
 

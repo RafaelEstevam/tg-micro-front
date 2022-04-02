@@ -133,15 +133,3 @@ module.exports = {
         }
     }
 }
-
-// {
-//     doc: {
-//         $cond: {
-//             if: {
-//                 $eq: ["$show_sensitive_data", true]
-//             },
-//             "then": "$doc",
-//             "else": "***"
-//         }
-//     }
-// }

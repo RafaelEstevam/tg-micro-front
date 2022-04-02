@@ -1,9 +1,10 @@
 const express = require('express');
+const mysql = require('mysql');
 const http = require('http');
 const mongoose = require('mongoose');
 const socketIo = require('socket.io');
 const cors = require('cors');
-
+const etl = require('./etl');
 const routes = require('./routes');
 // const interceptor = require('./utils/interceptor');
 
@@ -22,17 +23,28 @@ mongoose.connect('mongodb://localhost:27017/test', {
   useUnifiedTopology: true
 });
 
+const con = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "",
+  database: "educalytics"
+});
+
 let interval;
 
 io.on("connection", (socket) => {
   if (interval) {
     clearInterval(interval);
   }
-  // interval = setInterval(() => getApiAndEmit(socket), 1000);
   socket.on("disconnect", () => {
     // console.log("Client disconnected");
     // clearInterval(interval);
   });
+});
+
+con.connect(function(err) {
+  if (err) throw err;
+  console.log("Connected!");
 });
 
 const getApiAndEmit = socket => {
@@ -52,4 +64,6 @@ const getApiAndEmit = socket => {
 app.use(express.json());
 app.use(routes);
 
-module.exports = { server, io };
+etl.executeETL();
+
+module.exports = { server, io, con };

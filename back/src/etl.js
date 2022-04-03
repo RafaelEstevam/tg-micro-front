@@ -60,8 +60,10 @@ module.exports = {
 
                 });
             })
+            item.data.id = item.id;
             return item.data;
         });
+
 
         students.forEach(element => {
             con.query(`INSERT INTO students(id, student_name, student_email) values("${element.id}", "${element.name}", "${element.email}")`, callback)

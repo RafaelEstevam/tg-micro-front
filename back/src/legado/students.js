@@ -57,5 +57,51 @@ module.exports = [
             {"id": 10, "name": "Química", "classes": []},
             {"id": 11, "name": "Inglês", "classes": []},
         ]
-    }
+    },
+    {
+        "id": 3,
+        "data": {
+            "name": "Aluno 3",
+            "email": "aluno3@tg.com"
+        },
+        "courses": [
+            {"id": 3, "name": "Português", "classes": [
+                {"id": 4, "name": "Ortografia", comments: [], tasks: [], "time": 22},
+                {"id": 5, "name": "Interpretação de texto", comments: [], tasks: [], "time": 32},
+                {"id": 6, "name": "Gramática", comments: [], tasks: [], "time": 24}
+            ]},
+            {"id": 6, "name": "Física", "classes": [
+                {"id": 10, "name": "Bomba nuclear", comments: [], tasks: [], "time": 22},
+                {"id": 11, "name": "Buracos negros", comments: [], tasks: [], "time": 13},
+                {"id": 12, "name": "Teoria da relatividade", comments: [], tasks: [], "time": 18}
+            ]},
+            {"id": 10, "name": "Química", "classes": []},
+            {"id": 11, "name": "Inglês", "classes": []},
+        ]
+    },
+
+    {
+        "id": 4,
+        "data": {
+            "name": "Aluno 4",
+            "email": "aluno4@tg.com"
+        },
+        "courses": [
+            {"id": 1, "name": "Matemática", "classes" : [
+                {"id": 1, "name": "Equação do 2º grau", comments: [
+                    {"id": 3, "comment": "Essa equação não serve de nada."}
+                ], tasks: [
+                    {"id": 3, "name": "Dever de casa"},
+                    {"id": 4, "name": "Atividade avaliativa"}
+                ], "time": 22},
+                {"id": 2, "name": "Regra de três", comments: [
+                    {"id": 2, "comment": "Como faço para calcular porcentagem?"},
+                ], tasks: [], "time": 32},
+                {"id": 3, "name": "Fração", comments: [], tasks: [], "time": 24},
+            ]},
+            {"id": 3, "name": "Português", "classes": [
+                {"id": 6, "name": "Gramática", comments: [], tasks: [], "time": 24}
+            ]}
+        ]
+    },
 ]

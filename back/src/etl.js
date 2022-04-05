@@ -3,7 +3,7 @@ const { con } = require("./config.js");
 
 const callback = (err, result, fields) => {
     if (err) {
-        console.log(err.sqlMessage);
+        // console.log(err.sqlMessage);
         return "error"
     };
 }

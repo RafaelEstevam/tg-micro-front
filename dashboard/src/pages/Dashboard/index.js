@@ -6,7 +6,7 @@ import {
 } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 // import { useDispatch, useSelector } from 'react-redux';
-// import { API } from '../../services/api';
+import { API, getUserDataInStorage } from '../../services/api';
 import styled from 'styled-components';
 
 import XpProgressComponent from '../../components/xpprogress.component';
@@ -78,21 +78,61 @@ function Home() {
   const [currentLinkIndex, setCurrentLinkIndex] = useState(0);
   const [currentDash, setCurrentDash] = useState({});
   const [data, setData] = useState(mock());
+  const [subjects, setSubjects] = useState([]);
+  const [classesViewed, setClassesViewed] = useState([]);
+  const [subjectGrade, setSubjectGrade] = useState(0);
+  const [tasks, setTasks] = useState([]);
+  const [totalTasks, setTotalTasks] = useState(0);
+
+  const {email} = getUserDataInStorage();
 
   const handleSetDash = (item) => {
     const current = data.filter((dash) => {
-      return item.subject === dash.subject
+      return item.course_name === dash.course_name
     });
     setCurrentDash(current[0]);
   }
 
   const handleGetDash = (item, index) => {
-    setCurrentLinkIndex(index);
-    handleSetDash(item);
+    const {course_id, course_grade} = item;
+
+    setSubjectGrade(course_grade);
+    
+    try{
+      API.post(`getClassesByStudentEmailAndCourse`, {email, course_id}).then((res) => {
+        const {data} = res;
+        setClassesViewed(data);
+        getTasks(data[0]);
+      })
+    }catch(e){
+      console.log(e)
+    }
+  }
+
+  const getTasks = (item) => {
+    const {id} = item;
+    try{
+      API.post(`/getTasksByClassesAndStudentEmail`, {email, course_id: id}).then((res) => {
+        const {data} = res;
+        setTasks(data.result);
+        setTotalTasks(data.totalHomeWork)
+      })
+    }catch(e){
+      console.log(g)
+    }
   }
 
   useEffect(() => {
-    handleSetDash(data[0]);
+    try{
+      API.post(`/getCoursesByStudentEmail`, {email}).then((res) => {
+        const {data} = res;
+        setSubjects(data);
+        handleGetDash(data[0]);
+      })
+    }catch(e){
+      console.log(e);
+    }
+
   }, []);
 
   return (
@@ -101,17 +141,17 @@ function Home() {
 
       <DashboardMenu>
         <DashboardMenuWrapper>
-          {data.map((item, index) => (
+          {subjects.map((item, index) => (
             <DashboardMenuItem
               size="small"
-              key={item}
+              key={item.course_id}
               className={index !== currentLinkIndex && 'main-text'}
               color={index === currentLinkIndex ? 'primary' : 'default'}
               variant={index === currentLinkIndex ? 'contained' : 'text'}
               currentLinkIndex={currentLinkIndex}
               onClick={() => handleGetDash(item, index)}
             >
-              {item.subject}
+              {item.course_name}
             </DashboardMenuItem>
           ))}
         </DashboardMenuWrapper>
@@ -146,16 +186,16 @@ function Home() {
         <Grid item lg={9} sm={9} xl={9} xs={12}>
           <Grid container spacing={3}>
             <Grid item lg={3} xs={6}>
-              <MetricCardComponent title={'Nota'} subtitle={'parcial'} value={currentDash?.review} background={COLORS.primary} />
+              <MetricCardComponent title={'Nota'} subtitle={'parcial'} value={subjectGrade} background={COLORS.primary} />
             </Grid>
             <Grid item lg={3} xs={6}>
-              <MetricCardComponent title={'Aulas'} subtitle={'assistidas'} value={currentDash?.class} background={COLORS.primary} />
+              <MetricCardComponent title={'Aulas'} subtitle={'assistidas'} value={classesViewed.length} background={COLORS.primary} />
             </Grid>
             <Grid item lg={3} xs={6}>
-              <MetricCardComponent title={'Nº tarefas'} subtitle={'entregues'} value={currentDash?.tasks} background={COLORS.primary} />
+              <MetricCardComponent title={'Nº tarefas'} subtitle={'entregues'} value={tasks.length} background={COLORS.primary} />
             </Grid>
             <Grid item lg={3} xs={6}>
-              <MetricCardComponent title={'Nº trabalhos'} subtitle={'entregues'} value={currentDash?.jobs} background={COLORS.primary} />
+              <MetricCardComponent title={'Nº trabalhos'} subtitle={'entregues'} value={totalTasks} background={COLORS.primary} />
             </Grid>
             <Grid item lg={6} xs={12}>
               <CarrosselItem carrossel={currentDash?.carrossel} setCurrentIndex={setCurrentIndex} currentIndex={currentIndex} />

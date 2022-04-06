@@ -1,7 +1,7 @@
 {
   "name": "@re/dashboard",
   "scripts": {
-    "start": "webpack serve",
+    "start": "webpack serve -- --port 8500",
     "dev": "env-cmd -f .env.development webpack serve",
     "start:standalone": "webpack serve --env standalone",
     "build": "concurrently npm:build:*",

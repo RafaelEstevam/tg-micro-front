@@ -55,7 +55,7 @@ module.exports = {
                     })
 
                     c.tasks.map((task) => {
-                        tasks = [...tasks, ...[{id: task.id, student_id: item.id, class_id: c.id, name: task.name }]]
+                        tasks = [...tasks, ...[{id: task.id, student_id: item.id, class_id: c.id, name: task.name, grade: task.grade, homeWork: task.homeWork ? true: false, dateOfDelivery: task.dateOfDelivery  }]]
                     });
 
                 });
@@ -70,11 +70,11 @@ module.exports = {
         });
 
         courses.forEach(element => {
-            con.query(`INSERT INTO courses(id, course_name) values("${element.id}", "${element.name}")`, callback)
+            con.query(`INSERT INTO courses(id, course_name, course_grade) values("${element.id}", "${element.name}", "${element.grade}")`, callback)
         });
 
         classes.forEach(element => {
-            con.query(`INSERT INTO classes(id, class_name, class_time, course_id) values("${element.id}", "${element.name}", "${element.time}", "${element.course_id}")`, callback)
+            con.query(`INSERT INTO classes(id, class_name, class_time, class_dateofclass, course_id) values("${element.id}", "${element.name}", "${element.time}", "${element.dateOfClass}", "${element.course_id}")`, callback)
         });
 
         students_courses.forEach(element => {
@@ -94,7 +94,7 @@ module.exports = {
         });
 
         tasks.forEach(element => {
-            con.query(`INSERT INTO tasks(id, student_id, class_id, task_name) values("${element.id}", "${element.student_id}", "${element.class_id}",  "${element.name}")`, callback)
+            con.query(`INSERT INTO tasks(id, student_id, class_id, task_name, task_homework, task_grade, task_datetodelivery) values("${element.id}", "${element.student_id}", "${element.class_id}",  "${element.name}", ${element.homeWork}, "${element.grade}", "${element.dateOfDelivery}")`, callback)
         });
 
         // const result = await con.query("SELECT * FROM activation", function (err, result, fields) {

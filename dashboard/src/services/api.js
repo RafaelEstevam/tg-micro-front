@@ -29,6 +29,10 @@ const setUserDataInStorage = (user) => {
   localStorage.setItem('userData', JSON.stringify(user));
 }
 
+const getUserDataInStorage = () => {
+  return JSON.parse(localStorage.getItem('userData'));
+}
+
 const getTokenInStorage = () => {
   return localStorage.getItem("token");
 }
@@ -61,4 +65,4 @@ function resetStorage() {
   localStorage.removeItem("id");
 }
 
-export { API, setTokenInStorage, getTokenInStorage, decodeToken, resetStorage, setIdInStorage, getUserIdInStorage, setUserDataInStorage };
+export { API, setTokenInStorage, getTokenInStorage, decodeToken, resetStorage, setIdInStorage, getUserIdInStorage, setUserDataInStorage, getUserDataInStorage };

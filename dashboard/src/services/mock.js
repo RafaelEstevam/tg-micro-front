@@ -23,7 +23,7 @@ export default function mock(){
                 third: { student: 'Nome do aluno 3', avatar: 'http://192.168.0.14:3000/static/media/avatar.beda5535.jpg' }
             },
             carrossel: [
-                { title: 'Tempo médio', subtitle: 'Estudo da matéria', value: 100.35, label: 'minutos' },
+                { title: 'Tempo total', subtitle: 'Estudo da matéria', value: 100.35, label: 'minutos' },
                 { title: 'Quantidade média', subtitle: 'Atividades entregues', value: 20, label: 'por dia' },
             ],
             chart: [

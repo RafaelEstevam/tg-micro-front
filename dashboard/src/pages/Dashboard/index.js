@@ -83,6 +83,7 @@ function Home() {
   const [subjectGrade, setSubjectGrade] = useState(0);
   const [tasks, setTasks] = useState([]);
   const [totalTasks, setTotalTasks] = useState(0);
+  const [carrossel, setCarrossel] = useState([]);
 
   const {email} = getUserDataInStorage();
 
@@ -90,35 +91,39 @@ function Home() {
     const current = data.filter((dash) => {
       return item.course_name === dash.course_name
     });
+
     setCurrentDash(current[0]);
   }
 
   const handleGetDash = (item, index) => {
     const {course_id, course_grade} = item;
-
-    setSubjectGrade(course_grade);
     
+    setSubjectGrade(course_grade);
+    setCarrossel([]);
+
     try{
       API.post(`getClassesByStudentEmailAndCourse`, {email, course_id}).then((res) => {
         const {data} = res;
-        setClassesViewed(data);
-        getTasks(data[0]);
+        const carrosselItem = { title: 'Tempo total', subtitle: 'Estudo da matéria', value: data.totalClassTime, label: 'minutos' };
+        setClassesViewed(data.result);
+        getTasks(item, carrosselItem);
       })
     }catch(e){
       console.log(e)
     }
   }
 
-  const getTasks = (item) => {
-    const {id} = item;
+  const getTasks = (item, carrosselItem) => {
+    const {course_id} = item;
     try{
-      API.post(`/getTasksByClassesAndStudentEmail`, {email, course_id: id}).then((res) => {
+      API.post(`/getTasksByClassesAndStudentEmail`, {email, course_id}).then((res) => {
         const {data} = res;
         setTasks(data.result);
-        setTotalTasks(data.totalHomeWork)
+        setTotalTasks(data.totalHomeWork);
+        setCarrossel([carrosselItem, { title: 'Quantidade média', subtitle: 'Atividades entregues', value: data.averageActivitiesDelivered, label: 'por dia' }]);
       })
     }catch(e){
-      console.log(g)
+      console.log(e)
     }
   }
 
@@ -132,7 +137,6 @@ function Home() {
     }catch(e){
       console.log(e);
     }
-
   }, []);
 
   return (
@@ -198,7 +202,7 @@ function Home() {
               <MetricCardComponent title={'Nº trabalhos'} subtitle={'entregues'} value={totalTasks} background={COLORS.primary} />
             </Grid>
             <Grid item lg={6} xs={12}>
-              <CarrosselItem carrossel={currentDash?.carrossel} setCurrentIndex={setCurrentIndex} currentIndex={currentIndex} />
+              <CarrosselItem carrossel={carrossel} setCurrentIndex={setCurrentIndex} currentIndex={currentIndex} />
             </Grid>
             <Grid item lg={6} xs={12}>
               <CustomCard height={'360px'} className="primary-background">

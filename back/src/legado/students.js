@@ -12,12 +12,21 @@ module.exports = [
                 ], tasks: [
                     {"id": 1, "name": "Dever de casa", "homeWork": false, "dateOfDelivery": "2021-04-05"},
                     {"id": 2, "name": "Atividade avaliativa", "homeWork": true, "grade": 8.0, "dateOfDelivery": "2021-04-05"},
-                    {"id": 3, "name": "Atividade avaliativa", "homeWork": true, "grade": 6.0, "dateOfDelivery": "2021-06-20"}
+                    {"id": 3, "name": "Atividade avaliativa", "homeWork": true, "grade": 6.0, "dateOfDelivery": "2021-06-20"},
+                    {"id": 6, "name": "Atividade avaliativa", "homeWork": true, "grade": 6.0, "dateOfDelivery": "2021-06-20"},
+                    {"id": 7, "name": "Atividade avaliativa", "homeWork": true, "grade": 7.0, "dateOfDelivery": "2021-06-20"},
+                    {"id": 8, "name": "Atividade avaliativa", "homeWork": true, "grade": 6.5, "dateOfDelivery": "2021-07-20"},
+                    {"id": 9, "name": "Atividade avaliativa", "homeWork": true, "grade": 9.0, "dateOfDelivery": "2021-07-20"}
                 ], "time": 22},
                 {"id": 2, "name": "Regra de três", "dateOfClass": "2021-04-05", comments: [
                     {"id": 2, "comment": "Como faço para calcular porcentagem?"},
                 ], tasks: [], "time": 32},
                 {"id": 3, "name": "Fração", "dateOfClass": "2021-04-06", comments: [], tasks: [], "time": 24},
+                {"id": 13, "name": "Multifplicação", "dateOfClass": "2021-04-06", comments: [], tasks: [], "time": 24},
+                {"id": 14, "name": "Divisão", "dateOfClass": "2021-04-07", comments: [], tasks: [], "time": 24},
+                {"id": 15, "name": "Adição", "dateOfClass": "2021-04-07", comments: [], tasks: [], "time": 24},
+                {"id": 16, "name": "Subtração", "dateOfClass": "2021-04-07", comments: [], tasks: [], "time": 24},
+                {"id": 17, "name": "Fatorial", "dateOfClass": "2021-04-08", comments: [], tasks: [], "time": 24},
             ]},
             {"id": 3, "name": "Português", "classes": [
                 {"id": 4, "name": "Ortografia", "dateOfClass": "2021-04-05", comments: [], tasks: [], "time": 22},

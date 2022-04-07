@@ -32,6 +32,7 @@ routes.post('/getCoursesByStudentEmail', dwController.getCoursesByStudentEmail);
 routes.post('/getClassesByStudentEmailAndCourse', dwController.getClassesByStudentEmailAndCourse);
 routes.post('/getCommentsByClassesAndStudentEmail', dwController.getCommentsByClassesAndStudentEmail);
 routes.post('/getTasksByClassesAndStudentEmail', dwController.getTasksByClassesAndStudentEmail);
+routes.post('/getTasksByClass', dwController.getTasksByClass);
 
 routes.get('/students', (req, res) => {
     res.json(students);

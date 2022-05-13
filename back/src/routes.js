@@ -34,6 +34,8 @@ routes.post('/getCommentsByClassesAndStudentEmail', dwController.getCommentsByCl
 routes.post('/getTasksByClassesAndStudentEmail', dwController.getTasksByClassesAndStudentEmail);
 routes.post('/getTasksByClass', dwController.getTasksByClass);
 
+routes.post('/getTalksByStudentEmail', talkController.getTalkByStudentEmail);
+
 routes.get('/students', (req, res) => {
     res.json(students);
 });

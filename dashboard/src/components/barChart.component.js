@@ -2,7 +2,20 @@ import {
     Axis, Chart, getTheme, registerTheme, Tooltip, Interval, Legend, registerShape
 } from 'bizcharts';
 import { COLORS } from '../styles/colors';
+import styled from 'styled-components';
+import moment from 'moment';
 
+const ToolTipCard = styled('div')`
+    background: #fff;
+    border-radius: 3px;
+    box-shadow: 0px 0px 6px #00000020;
+    padding: 5px;
+`;
+
+const ToolTipData = styled('p')`
+    margin-top: 5px;
+    font-size: 12px;
+`;
 
 registerTheme('default', {
     geometries: {
@@ -41,6 +54,16 @@ registerShape('interval', 'border-radius', {
     },
 });
 
+const CustomToolTip = ({line}) => {
+    console.log(line);
+    return (
+        <ToolTipCard>
+            <ToolTipData>Dia: {line[0].data.class_dateofclass}</ToolTipData>
+            <ToolTipData>Min: {line[0].data.class_time} minutos</ToolTipData>
+        </ToolTipCard>
+    )
+}
+
 
 export default function BarChart({ data }) {
 
@@ -49,13 +72,13 @@ export default function BarChart({ data }) {
     return (
         <Chart height={230} autoFit data={data} interactions={['active-region']} padding={[30, 30, 30, 50]} >
             <Interval
-                position="date*min"
+                position="class_dateofclass*class_time"
                 color={COLORS.light0}
                 shape="border-radius"
             />
-            <Axis name="min" visible={false} />
-            <Axis name="date" visible={true} />
-            <Tooltip shared />
+            <Axis name="Min. estudados" visible={false} />
+            <Axis name="Dias" visible={true} />
+            <Tooltip children={(a, line) => <CustomToolTip line={line}/>} />
         </Chart>
     )
 }

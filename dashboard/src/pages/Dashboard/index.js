@@ -84,6 +84,7 @@ function Home() {
   const [tasks, setTasks] = useState([]);
   const [totalTasks, setTotalTasks] = useState(0);
   const [carrossel, setCarrossel] = useState([]);
+  const [daysOfClass, setDaysOfClass] = useState([]);
 
   const {email} = getUserDataInStorage();
 
@@ -95,9 +96,21 @@ function Home() {
     setCurrentDash(current[0]);
   }
 
+  const handleGetTalks = (e) => {
+    const data = {email: e};
+    try{
+      API.post(`getTalksByStudentEmail`, data).then((res) => {
+        console.log(res);
+      })
+    }catch(e){
+      console.log(e)
+    }
+  }
+
   const handleGetDash = (item, index) => {
     const {course_id, course_grade} = item;
     
+    setCurrentLinkIndex(index);
     setSubjectGrade(course_grade);
     setCarrossel([]);
 
@@ -106,6 +119,7 @@ function Home() {
         const {data} = res;
         const carrosselItem = { title: 'Tempo total', subtitle: 'Estudo da matéria', value: data.totalClassTime, label: 'minutos' };
         setClassesViewed(data.result);
+        setDaysOfClass(data.daysOfClass);
         getTasks(item, carrosselItem);
       })
     }catch(e){
@@ -132,7 +146,8 @@ function Home() {
       API.post(`/getCoursesByStudentEmail`, {email}).then((res) => {
         const {data} = res;
         setSubjects(data);
-        handleGetDash(data[0]);
+        handleGetDash(data[0], 0);
+        handleGetTalks(email);
       })
     }catch(e){
       console.log(e);
@@ -208,7 +223,7 @@ function Home() {
               <CustomCard height={'360px'} className="primary-background">
                 <ChartWrapper>
                   <Typography style={{ color: COLORS.light0 }}><b>Minutos estudados</b></Typography>
-                  <BarChartComponent data={currentDash?.chart} />
+                  <BarChartComponent data={daysOfClass} />
                   <Typography style={{ color: COLORS.light0 }}><b>Por semana</b></Typography>
                 </ChartWrapper>
               </CustomCard>
@@ -224,12 +239,8 @@ function Home() {
             </Grid>
             <Grid item lg={8} xs={12}>
               <CustomCard height={'250px'} className="second-background main-text" style={{ display: 'flex', justifyContent: 'space-evenly' }}>
-                {currentDash && currentDash?.chat && (
-                  <>
-                    <CarrosselItemComponent title="Interações" subtitle="Nas atividades" lable="Nº de Interações" value={currentDash?.chat[0]?.value} show />
-                    <CarrosselItemComponent title="Mensagens" subtitle="Para o professor" lable="Nº de mensagens" value={currentDash?.chat[1]?.value} show />
-                  </>
-                )}
+                <CarrosselItemComponent title="Duvidas" subtitle="no fórum" lable="Nº de dúvidas" show />
+                <CarrosselItemComponent title="Respostas" subtitle="no fórum" lable="Nº de respostas" show />
               </CustomCard>
             </Grid>
           </Grid>

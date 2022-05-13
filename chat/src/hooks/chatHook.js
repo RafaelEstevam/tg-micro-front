@@ -84,9 +84,9 @@ const chatHook = () => {
       const {dataChat} = chat;
       const remove = true;
 
-      setTimeout(() => {
-        usersWebSocket.emit('user_is_writing', dataChat)
-      }, 1000);
+      // setTimeout(() => {
+      //   usersWebSocket.emit('user_is_writing', dataChat)
+      // }, 1000);
   
       // setTimeout(() => {
       //   usersWebSocket.emit('user_is_writing', {dataChat, remove})

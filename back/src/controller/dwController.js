@@ -11,7 +11,7 @@ const queries = {
     async getCoursesByStudentEmail(req, res){
         const {email} = req.body;
         const result = await con.query(`
-        SELECT students.id, students.student_name, students.student_email, course_name, course_id, course_grade
+        SELECT students.id, students.student_name, students.student_email, course_name, course_id, students_courses.course_grade
             FROM students, courses, students_courses
             WHERE students.student_email = "${email}" and
             students_courses.student_id = students.id and

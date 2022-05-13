@@ -49,4 +49,16 @@ module.exports = {
         // return res.json(filteredTalks);
         return res.json(talks);
     },
+
+    async getTalkByStudentEmail (req, res){
+        const {email} = req.body;
+
+        const query = {
+            email
+        }
+
+        let talks = await Talk.find(query).count();
+
+        return res.json({numberTalks: talks});
+    }
 }

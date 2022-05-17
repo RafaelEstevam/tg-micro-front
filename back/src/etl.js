@@ -96,7 +96,6 @@ module.exports = {
         });
 
         answers.forEach(element => {
-            console.log(element)
             con.query(`INSERT INTO answers(id, student_id, comment_id, answer_comment, answer_accept) values("${element.id}", "${element.student_id}", "${element.comment_id}",  "${element.comment}", "${element.accept}")`, callback)
         })
 

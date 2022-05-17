@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { COLORS } from '../styles/colors';
 import CustomCard from './card.component';
+import { API, getUserDataInStorage } from '../services/api';
 
 const StyledCarrosselItem = styled('div')`
   height: 100%;
@@ -60,9 +61,21 @@ const CarrosselButton = styled(IconButton)`
   }
 `
 
-export const CarrosselItemComponent = ({ title, subtitle, value, label, index, currentIndex, show }) => {
+export const CarrosselItemComponent = ({ title, subtitle, value, label, index, currentIndex, show}) => {
 
   const accessibility = useSelector(state => state.accessibility);
+  // const {email} = getUserDataInStorage();
+  // const [total, setTotal] = useState(0);
+
+  // useEffect(() => {
+  //   try{
+  //     API.get(`/${api}/${email}`).then((response) => {
+  //       setTotal(response.data)
+  //     })
+  //   }catch(e){
+  //     console.log(e)
+  //   }
+  // }, [])
 
   return (
     <StyledCarrosselItem index={show || index} currentIndex={show || currentIndex}>

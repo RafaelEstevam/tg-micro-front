@@ -3,6 +3,7 @@ import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import styled from 'styled-components';
 import avatar from '../assets/avatar.jpg';
+import {xpFactor, levelFactor} from '../services/achievements'
 
 import {Typography, Tooltip} from '@material-ui/core';
 
@@ -37,19 +38,20 @@ const Xp = styled(Typography)`
     font-weight: bold;
     z-index: 2;
     margin-top: -30px;
-    margin-right: -80%;
+    margin-right: ${(props) => props.left ? '70%' : '-80%'};
+
     // bottom: 0px;
     // right: 0px;
 `
 
-export default function XpProgress({experience}) {
+export default function XpProgress({experience, classesViewed}) {
 
     const percentage = experience?.currentLevel;
 
     return (
         <XpComponent>
             <CircularProgressbar
-                value={percentage}
+                value={classesViewed.length * 5}
                 background={false}
                 styles={buildStyles({
                     strokeLinecap: 'round',
@@ -65,7 +67,10 @@ export default function XpProgress({experience}) {
                 <img src={avatar} />
             </CircularDiv>
             <Tooltip title="Pontos por cada interação">
-                <Xp>{experience?.xp} XP</Xp>
+                <>
+                <Xp>{classesViewed.length * xpFactor} XP</Xp>
+                <Xp left>Nivel {Math.round(classesViewed.length / levelFactor)}</Xp>
+                </>
             </Tooltip>
         </XpComponent>
     );

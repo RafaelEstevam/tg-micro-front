@@ -21,7 +21,7 @@ import { CarrosselItem, CarrosselItemComponent } from '../../components/carrosse
 import {PageTitleComponent} from '../../components/pageTitle.component';
 // import { ChatBar } from '../../components/chatBar.component';
 
-import { EmojiEvents } from '@material-ui/icons';
+import { EmojiEvents, QuestionAnswer } from '@material-ui/icons';
 
 import { COLORS } from '../../styles/colors';
 
@@ -85,6 +85,8 @@ function Home() {
   const [totalTasks, setTotalTasks] = useState(0);
   const [carrossel, setCarrossel] = useState([]);
   const [daysOfClass, setDaysOfClass] = useState([]);
+  const [totalComments, setTotalComments] = useState(0);
+  const [totalAnswers, setTotalAnswers] = useState(0)
 
   const {email} = getUserDataInStorage();
 
@@ -154,6 +156,22 @@ function Home() {
     }
   }, []);
 
+  useEffect(() => {
+    try{
+      API.get(`/getCommentsByStudentEmail/${email}`).then((response) => {
+        setTotalComments(response.data)
+      })
+
+      API.get(`/getAnswerByStudentEmail/${email}`).then((response) => {
+        setTotalAnswers(response.data)
+      })
+    }catch(e){
+      console.log(e)
+    }
+  }, [])
+
+  
+
   return (
     <>
       <PageTitleComponent title="Dashboard" subtitle="Último acesso em 20 de junho de 2021" />
@@ -183,8 +201,8 @@ function Home() {
               <CustomCard className="second-background main-text">
                 <CardContent>
                   <CardContent>
-                    <XpProgressComponent experience={currentDash?.experience} />
-                    <AchievementsComponent achievements={currentDash?.achievements} />
+                    <XpProgressComponent {...{classesViewed}} />
+                    <AchievementsComponent {...{tasks, totalTasks, subjectGrade, classesViewed, totalComments, totalAnswers}} />
                     <PodiumComponent podium={currentDash?.podium} />
                   </CardContent>
                 </CardContent>
@@ -228,27 +246,33 @@ function Home() {
                 </ChartWrapper>
               </CustomCard>
             </Grid>
-            <Grid item lg={4} xs={12}>
-              <MetricCardComponent
-                height={'250px'}
-                title={currentDash?.emphasis?.title}
-                subtitle={currentDash?.emphasis?.subtitle}
-                icon={<EmojiEvents />}
-                background={COLORS.primary}
-              />
-            </Grid>
-            <Grid item lg={8} xs={12}>
-              <CustomCard height={'250px'} className="second-background main-text" style={{ display: 'flex', justifyContent: 'space-evenly' }}>
-                <CarrosselItemComponent title="Duvidas" subtitle="no fórum" lable="Nº de dúvidas" show />
-                <CarrosselItemComponent title="Respostas" subtitle="no fórum" lable="Nº de respostas" show />
-              </CustomCard>
-            </Grid>
           </Grid>
         </Grid>
-        {/* <Grid item lg={1} sm={8} xl={1} xs={12}>
-          <ChatBar />
-        </Grid> */}
       </Grid>
+
+      <Box mt={2}>
+        <PageTitleComponent title="Dados da comunidade" />
+        <Grid container spacing={3}>
+          <Grid item lg={12} xs={12}>
+            <CustomCard className="second-background main-text" style={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center' }}>
+              <Grid container spacing={3}>
+                <Grid item md={6} xs={12} style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                  <Box style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}} mt={1}>
+                    <QuestionAnswer style={{fontSize: '100px', marginRight: '15px'}} />
+                    <Typography variant="h3" className="main-font-style main-font-type" align="center">Interações na <br/> comunidade</Typography>
+                  </Box>
+                </Grid>
+                <Grid item md={3} xs={6}>
+                  <CarrosselItemComponent value={totalComments.total || '0'} title="Duvidas" subtitle="no fórum" lable="Nº de dúvidas" show />
+                </Grid>
+                <Grid item md={3} xs={6}>
+                  <CarrosselItemComponent value={totalAnswers.totalAnswers || '0'} title="Respostas" subtitle="no fórum" lable="Nº de respostas" show />
+                </Grid>
+              </Grid>
+            </CustomCard>
+          </Grid>
+        </Grid>
+      </Box>
     </>
   );
 }

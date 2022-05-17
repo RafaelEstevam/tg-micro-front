@@ -95,6 +95,26 @@ const queries = {
         });
     },
 
+    async getCommentsByStudentEmail(req, res){
+        const {email} = req.params;
+        const result = await con.query(`SELECT * from comments, students where students.student_email = "${email}" and comments.student_id = students.id`, (err,result) => {
+            const total = result?.length;
+            return res.json({...result, ...{total}});
+        });
+    },
+
+    async getAnswerByStudentEmail(req, res){
+        const {email} = req.params;
+        const result = await con.query(`SELECT * from answers, students where students.student_email = "${email}" and answers.student_id = students.id`, (err,result) => {
+            const total = result.length;
+            const answersAccept = result.filter((item) => {
+                return item.answer_accept == 1
+            })
+            const totalAnsersAccept = answersAccept.length;
+            return res.json({...result, ...{total, totalAnsersAccept}});
+        });
+    },
+
     async getTasksByClassesAndStudentEmail(req, res){
         const {email, course_id} = req.body;
         const result = await con.query(`

@@ -33,6 +33,8 @@ routes.post('/getClassesByStudentEmailAndCourse', dwController.getClassesByStude
 routes.post('/getCommentsByClassesAndStudentEmail', dwController.getCommentsByClassesAndStudentEmail);
 routes.post('/getTasksByClassesAndStudentEmail', dwController.getTasksByClassesAndStudentEmail);
 routes.post('/getTasksByClass', dwController.getTasksByClass);
+routes.get('/getAnswerByStudentEmail/:email', dwController.getAnswerByStudentEmail);
+routes.get('/getCommentsByStudentEmail/:email', dwController.getCommentsByStudentEmail);
 
 routes.post('/getTalksByStudentEmail', talkController.getTalkByStudentEmail);
 

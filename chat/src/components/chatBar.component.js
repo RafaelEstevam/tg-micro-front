@@ -72,7 +72,7 @@ export const ChatWrapper = ({ theme }) => {
         // usersWebSocket,
         user_id,
         // API,
-        // user_data,
+        user_data,
         submitMessage,
         handleCloseChat,
         // userMessage,
@@ -84,63 +84,6 @@ export const ChatWrapper = ({ theme }) => {
         userIsWriting,
         showUserWriting        // setMessages
     } = chatHook();
-    // const [userMessage, setUserMessage] = useState('');
-
-    // const handleCloseChat = () => {
-    //     dispatch({ type: 'SET_CHAT', chat: { showChat: false, dataChat: {} } });
-    // };
-
-    // const submitMessage = (message) => {
-    //     const id = chat.dataChat["_id"];
-    //     const {name, email} = user_data;
-
-    //     const content = {
-    //         id: id,
-    //         from_id: user_id,
-    //         text: message,
-    //         name,
-    //         email
-    //     };
-
-    //     setMessages([...messages, ...[content]]);
-    //     usersWebSocket.emit('send_message', (content));
-    // };
-
-    // const getTalk = async () => {
-    //     const to_id = chat?.dataChat["_id"];
-    //     const from_id = user_id;
-    //     try{
-    //         const {data} = await API.get(`/talk/${from_id}/${to_id}`);
-    //         console.log(data);
-    //         setMessages(data);
-    //     }catch(e){
-    //         console.log(e)
-    //     }
-    // }
-
-    // useEffect(() => {
-
-    //     console.log(userMessage);
-
-    //     if(userMessage.text){
-    //         setMessages([...messages, ...[userMessage]]);
-    //     }
-    // }, [userMessage]);
-
-    // useEffect(() => {
-    //     usersWebSocket.on('reload_chat_connection', (params) => {
-    //         console.log(params);
-    //     });
-
-    //     usersWebSocket.on('recieve_message', (params) => {
-    //         setUserMessage(params);
-    //     });
-        
-    // }, []);
-
-    // useEffect(() => {
-    //     getTalk();
-    // }, [chat])
 
     return (
         <div className={`StyledChatWrapper ${nightMode && 'nightMode'}`} show={chat.showChat}>
@@ -158,13 +101,10 @@ export const ChatWrapper = ({ theme }) => {
                     <MessageItemWrapper key={item} isYou={item.from_id === user_id }>
                         <MessageItem isYou={item.from_id === user_id}>
                             <p style={{ color: "#ffffff" }}>{item.text}</p>
-                            <p>{item.name}{' '}{item.date}</p>
+                            <p>{item.from_id === user_id ? user_data.name : chat?.dataChat?.name}{' '}{item.date}</p>
                         </MessageItem>
                     </MessageItemWrapper>
                 ))}
-                {showUserWriting && (
-                    <p>Usuário está escrevendo.</p>
-                )}
             </MessagesWrapper>
             <MessageText className="second-background">
                 <CustomInput

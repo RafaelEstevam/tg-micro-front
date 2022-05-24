@@ -1,5 +1,14 @@
 const {con} = require("../config.js");
 
+const xpFactor = 500;
+
+const orderByXp = positions => {
+    const list = positions?.sort(function (a, b) {
+        return b.xp - a.xp;
+    });
+    return list;
+};
+
 const queries = {
     async test(req, res) {
         const result = await con.query("SELECT * FROM activation", function (err, result, fields) {
@@ -95,23 +104,26 @@ const queries = {
         });
     },
 
-    async getCommentsByStudentEmail(req, res){
-        const {email} = req.params;
-        const result = await con.query(`SELECT * from comments, students where students.student_email = "${email}" and comments.student_id = students.id`, (err,result) => {
+    async getCommentsByStudentEmailandCourseId(req, res){
+        const {email, course_id} = req.body;
+
+        const result = await con.query(`SELECT * from comments, students where students.student_email = "${email}" and comments.course_id = "${course_id}" and comments.student_id = students.id`, (err,result) => {
             const total = result?.length;
             return res.json({...result, ...{total}});
         });
     },
 
-    async getAnswerByStudentEmail(req, res){
-        const {email} = req.params;
-        const result = await con.query(`SELECT * from answers, students where students.student_email = "${email}" and answers.student_id = students.id`, (err,result) => {
+    async getAnswerByStudentEmailandCourseId(req, res){
+        const {email, course_id} = req.body;
+        const result = await con.query(`SELECT * from answers, students where students.student_email = "${email}" and answers.course_id = "${course_id}" and answers.student_id = students.id`, (err,result) => {
             const total = result.length;
+            
             const answersAccept = result.filter((item) => {
                 return item.answer_accept == 1
-            })
-            const totalAnsersAccept = answersAccept.length;
-            return res.json({...result, ...{total, totalAnsersAccept}});
+            });
+
+            const totalAnswersAccept = answersAccept.length;
+            return res.json({...result, ...{total, totalAnswersAccept}});
         });
     },
 
@@ -165,6 +177,19 @@ const queries = {
             averageActivitiesDelivered = result.length !== 0 ? (result.length / filteredDaysOfDelivery.length).toFixed(2) : 0;
 
             return res.json({result, ...{totalActivities: result.length, totalHomeWork, averageActivitiesDelivered, filteredDaysOfDelivery }});
+        });
+    },
+
+    async getPodiumByCourseId(req, res){
+        const {course_id} = req.params;
+
+        const result = await con.query(`SELECT s.id as student_id, s.student_name , count(c.course_id) as class_count, course_id from students s , classes c , students_classes sc where s.id = sc.student_id and c.id = sc.class_id and c.course_id = "${course_id}" group by student_name order by class_count desc limit 3`, (err,result) => {
+            
+            result.map((item) => {
+                item.xp = xpFactor * item.class_count
+            })
+            
+            return res.json(result);
         });
     }
 

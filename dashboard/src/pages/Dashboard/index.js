@@ -2,7 +2,8 @@ import {
   Box,
   Card,
   CardContent, Grid, Typography,
-  Button
+  Button,
+  LinearProgress
 } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 // import { useDispatch, useSelector } from 'react-redux';
@@ -86,57 +87,77 @@ function Home() {
   const [carrossel, setCarrossel] = useState([]);
   const [daysOfClass, setDaysOfClass] = useState([]);
   const [totalComments, setTotalComments] = useState(0);
-  const [totalAnswers, setTotalAnswers] = useState(0)
+  const [totalAnswers, setTotalAnswers] = useState(0);
+  const [podium, setPodium] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const {email} = getUserDataInStorage();
 
-  const handleSetDash = (item) => {
-    const current = data.filter((dash) => {
-      return item.course_name === dash.course_name
-    });
-
-    setCurrentDash(current[0]);
-  }
-
-  const handleGetTalks = (e) => {
-    const data = {email: e};
+  const handleGetAnswersCommentsByCourse = async(item) => {
+    const {course_id} = item;
+    const data = {
+      course_id,
+      email
+    }
     try{
-      API.post(`getTalksByStudentEmail`, data).then((res) => {
-        console.log(res);
+      await API.post(`/getCommentsByStudentEmailandCourseId`, data).then((response) => {
+        setTotalComments(response.data)
+      })
+
+      await API.post(`/getAnswerByStudentEmailandCourseId`, data).then((response) => {
+        setTotalAnswers(response.data)
+      })
+    }catch(e){
+      console.log(e)
+    }
+  };
+
+  const handleGetPodiumByCourseId = async(item) => {
+    const {course_id} = item;
+    
+    try{
+      await API.get(`/getPodiumByCourseId/${course_id}`).then((response) => {
+        setPodium(response.data)
+      })
+    }catch(e){
+      console.log(e)
+    }
+  };
+
+  const handleGetTasks = async (item, carrosselItem) => {
+    const {course_id} = item;
+    try{
+      await API.post(`/getTasksByClassesAndStudentEmail`, {email, course_id}).then((res) => {
+        const {data} = res;
+        setTasks(data.result);
+        setTotalTasks(data.totalHomeWork);
+        setCarrossel([carrosselItem, { title: 'Quantidade média', subtitle: 'Atividades entregues', value: data.averageActivitiesDelivered, label: 'por dia' }]);
       })
     }catch(e){
       console.log(e)
     }
   }
 
-  const handleGetDash = (item, index) => {
+  const handleGetDash = async (item, index) => {
     const {course_id, course_grade} = item;
+
+    setLoading(true);
     
     setCurrentLinkIndex(index);
     setSubjectGrade(course_grade);
     setCarrossel([]);
 
+    handleGetAnswersCommentsByCourse(item);
+    handleGetPodiumByCourseId(item);
+
     try{
-      API.post(`getClassesByStudentEmailAndCourse`, {email, course_id}).then((res) => {
+      await API.post(`getClassesByStudentEmailAndCourse`, {email, course_id}).then((res) => {
         const {data} = res;
         const carrosselItem = { title: 'Tempo total', subtitle: 'Estudo da matéria', value: data.totalClassTime, label: 'minutos' };
         setClassesViewed(data.result);
         setDaysOfClass(data.daysOfClass);
-        getTasks(item, carrosselItem);
-      })
-    }catch(e){
-      console.log(e)
-    }
-  }
-
-  const getTasks = (item, carrosselItem) => {
-    const {course_id} = item;
-    try{
-      API.post(`/getTasksByClassesAndStudentEmail`, {email, course_id}).then((res) => {
-        const {data} = res;
-        setTasks(data.result);
-        setTotalTasks(data.totalHomeWork);
-        setCarrossel([carrosselItem, { title: 'Quantidade média', subtitle: 'Atividades entregues', value: data.averageActivitiesDelivered, label: 'por dia' }]);
+        handleGetTasks(item, carrosselItem);
+        setLoading(false);
       })
     }catch(e){
       console.log(e)
@@ -149,32 +170,20 @@ function Home() {
         const {data} = res;
         setSubjects(data);
         handleGetDash(data[0], 0);
-        handleGetTalks(email);
       })
     }catch(e){
       console.log(e);
     }
   }, []);
 
-  useEffect(() => {
-    try{
-      API.get(`/getCommentsByStudentEmail/${email}`).then((response) => {
-        setTotalComments(response.data)
-      })
-
-      API.get(`/getAnswerByStudentEmail/${email}`).then((response) => {
-        setTotalAnswers(response.data)
-      })
-    }catch(e){
-      console.log(e)
-    }
-  }, [])
-
-  
-
   return (
     <>
-      <PageTitleComponent title="Dashboard" subtitle="Último acesso em 20 de junho de 2021" />
+
+      {loading && (
+        <LinearProgress />
+      )}
+
+      <PageTitleComponent title="Dashboard" />
 
       <DashboardMenu>
         <DashboardMenuWrapper>
@@ -203,21 +212,11 @@ function Home() {
                   <CardContent>
                     <XpProgressComponent {...{classesViewed}} />
                     <AchievementsComponent {...{tasks, totalTasks, subjectGrade, classesViewed, totalComments, totalAnswers}} />
-                    <PodiumComponent podium={currentDash?.podium} />
+                    <PodiumComponent {...{podium}} />
                   </CardContent>
                 </CardContent>
               </CustomCard>
             </Grid>
-            {/* <Grid item lg={12} xs={12}>
-              <CustomCard className="main-background main-text">
-                <CardContent>
-                  <ActivityComponent />
-                  <ActivityComponent />
-                  <ActivityComponent />
-                  <ActivityComponent />
-                </CardContent>
-              </CustomCard>
-            </Grid> */}
           </Grid>
         </Grid>
         <Grid item lg={9} sm={9} xl={9} xs={12}>
@@ -266,7 +265,7 @@ function Home() {
                   <CarrosselItemComponent value={totalComments.total || '0'} title="Duvidas" subtitle="no fórum" lable="Nº de dúvidas" show />
                 </Grid>
                 <Grid item md={3} xs={6}>
-                  <CarrosselItemComponent value={totalAnswers.totalAnswers || '0'} title="Respostas" subtitle="no fórum" lable="Nº de respostas" show />
+                  <CarrosselItemComponent value={totalAnswers.totalAnswersAccept || '0'} title="Respostas" subtitle="no fórum" lable="Nº de respostas" show />
                 </Grid>
               </Grid>
             </CustomCard>

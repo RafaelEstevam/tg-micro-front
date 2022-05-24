@@ -4,7 +4,7 @@ const interceptor = require("../utils/interceptor");
 
 module.exports = {
     async post(req, res) {
-        const { email, password, name, doc, recieve_sms, recieve_email, show_sensitive_data, term_accept, term_accept_version, created_at, updated_at } = req.body;
+        const { email, password, name, doc, avatar, recieve_sms, recieve_email, show_sensitive_data, term_accept, term_accept_version, created_at, updated_at } = req.body;
         let user = await User.findOne({ doc });
         let currentTerm = await Term.findOne().sort({ term_version: -1 }).limit(1)
 
@@ -14,6 +14,7 @@ module.exports = {
                 password,
                 name,
                 doc,
+                avatar,
                 recieve_sms,
                 recieve_email,
                 show_sensitive_data,
@@ -34,7 +35,9 @@ module.exports = {
 
     async put(req, res) {
 
-        const { email, password, name, doc, recieve_sms, recieve_email, show_sensitive_data, term_accept, term_accept_version } = req.body;
+        console.log(req.body);
+
+        const { email, password, name, doc, avatar, recieve_sms, recieve_email, show_sensitive_data, term_accept, term_accept_version } = req.body;
         const { id } = req.params;
 
         let user = await User.findById(id);
@@ -42,7 +45,7 @@ module.exports = {
         if (user) {
 
             const updated_at = new Date();
-            await User.updateOne({ id }, { email, password, name, doc, recieve_sms, recieve_email, show_sensitive_data, term_accept, term_accept_version, updated_at });
+            await User.updateOne({ id }, { email, password, name, doc, avatar, recieve_sms, recieve_email, show_sensitive_data, term_accept, term_accept_version, updated_at });
             interceptor(req, res, user);
 
             return res.send("Usuário alterado com sucesso");
@@ -57,33 +60,7 @@ module.exports = {
         const { id } = req.params;
 
         const project_data = {
-            doc: {
-                $cond: {
-                    if: {
-                        $eq: ["$show_sensitive_data", true]
-                    },
-                    "then": "$doc",
-                    "else": "***"
-                }
-            },
-            name: {
-                $cond: {
-                    if: {
-                        $eq: ["$show_sensitive_data", true]
-                    },
-                    "then": "$name",
-                    "else": "***"
-                }
-            },
-            email: {
-                $cond: {
-                    if: {
-                        $eq: ["$show_sensitive_data", true]
-                    },
-                    "then": "$email",
-                    "else": "***"
-                }
-            }
+            password: 0
         }
 
         let user = await User.findById(id, project_data);

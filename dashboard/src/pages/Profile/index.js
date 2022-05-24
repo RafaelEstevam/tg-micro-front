@@ -1,43 +1,35 @@
 import {
   Box,
   Button,
-  Card,
   CardContent,
-  CardHeader,
   Divider,
   Grid,
-  TextField,
-  Slider,
-  Typography
+  TextField
 } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
 import {status} from '../../services/enun';
 import Select from '../../components/select.component';
-import TaskHook from './hook.js';
+import ProfileHook from './hook.js';
 import CustomCard from '../../components/card.component.js';
 import {PageTitleComponent} from '../../components/pageTitle.component';
-
-
 
 const TaskVkew = (props) => {
 
   const accessibility = useSelector(state => state.accessibility);
 
   const {
-    id,
+    userId,
     values,
-    slideValue,
+    setValues,
     handleChange,
-    handleChangeSlide,
-    handleDelete,
     handleOnSubmit
-  } = TaskHook();
+  } = ProfileHook();
 
   return (
     <form
       autoComplete="off"
       onSubmit={(e) => handleOnSubmit(e)}
-      {...props}
+      // {...props}
     >
       <PageTitleComponent title="Perfil do usuário" />
 
@@ -76,65 +68,50 @@ const TaskVkew = (props) => {
                 variant="outlined"
               />
             </Grid>
-            <Grid item md={3} xs={12}>
+            
+            <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
                 color={accessibility.nightMode ? 'primary' : 'primary'}
                 focused={accessibility.nightMode}
-                label="Gênero"
-                name="gender"
+                label="Email"
+                name="email"
                 onChange={handleChange}
-                value={'' || values.gender}
-                variant="outlined"
-                select
-                SelectProps={{ native: true }}
-              >
-                <option>Selecione</option>
-                <option value="M">Masculino</option>
-                <option value="F">Feminino</option>
-                <option value="O">Outros</option>
-                <option value="N">Não informar</option>
-              </TextField>
-            </Grid>
-            <Grid item md={3} xs={12}>
-              <TextField
-                fullWidth
-                color={accessibility.nightMode ? 'primary' : 'primary'}
-                focused={accessibility.nightMode}
-                label="Aniversário"
-                name="birthday"
-                type="date"
-                onChange={handleChange}
-                value={'' || values.birthday}
-                variant="outlined"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </Grid>
-            <Grid item md={3} xs={12}>
-              <TextField
-                fullWidth
-                color={accessibility.nightMode ? 'primary' : 'primary'}
-                focused={accessibility.nightMode}
-                label="Telefone"
-                name="phone"
-                onChange={handleChange}
-                value={'' || values.phone}
+                value={'' || values.email}
                 variant="outlined"
               />
             </Grid>
-            <Grid item md={3} xs={12}>
+
+            <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
                 color={accessibility.nightMode ? 'primary' : 'primary'}
                 focused={accessibility.nightMode}
-                label="Celular"
-                name="mobile"
+                label="Senha"
+                name="password"
+                type="password"
                 onChange={handleChange}
-                value={'' || values.mobile}
+                value={'' || values.password}
                 variant="outlined"
               />
+            </Grid>
+
+            <Grid item md={6} xs={12}>
+              <TextField
+                fullWidth
+                color={accessibility.nightMode ? 'primary' : 'primary'}
+                focused={accessibility.nightMode}
+                label="Avatar"
+                name="avatar"
+                onChange={handleChange}
+                value={'' || values.avatar}
+                variant="outlined"
+              />
+              {values?.avatar?.length > 0 && (
+                <Box mt={2}>
+                  <img src={values.avatar} width="100px" height="100px" alt="Avatar" />
+                </Box>
+              )}
             </Grid>
             
           </Grid>
@@ -143,7 +120,7 @@ const TaskVkew = (props) => {
         <Box
           sx={{
             display: 'flex',
-            justifyContent: id ? 'space-between' : 'flex-end',
+            // justifyContent: id ? 'space-between' : 'flex-end',
             width: '100%',
             p: 2
           }}

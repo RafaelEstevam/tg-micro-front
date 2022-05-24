@@ -51,11 +51,11 @@ module.exports = {
                     students_classes = [...students_classes, ...[{student_id: item.id, class_id: c.id }]]
 
                     c.comments.map((comment) => {
-                        comments = [...comments, ...[{id: comment.id, student_id: item.id, class_id: c.id, comment: comment.comment }]]
+                        comments = [...comments, ...[{id: comment.id, student_id: item.id, class_id: c.id, comment: comment.comment, course_id: comment.course_id }]]
                         if(comment?.answers?.length > 0){
                             let answersList = comment.answers;
                             answersList.map((answer) => {
-                                answers = [...answers, ...[{id: answer.id, student_id: answer.student_id, comment_id: comment.id, comment: answer.comment, accept: answer.accept ? 1 : 0  }]]
+                                answers = [...answers, ...[{id: answer.id, student_id: answer.student_id, comment_id: comment.id, comment: answer.comment, accept: answer.accept ? 1 : 0, class_id: answer.class_id, course_id: answer.course_id  }]]
                             })
                         }
                     })
@@ -92,11 +92,11 @@ module.exports = {
         // });
 
         comments.forEach(element => {
-            con.query(`INSERT INTO comments(id, student_id, class_id, comment) values("${element.id}", "${element.student_id}", "${element.class_id}",  "${element.comment}")`, callback)
+            con.query(`INSERT INTO comments(id, student_id, class_id, comment, course_id) values("${element.id}", "${element.student_id}", "${element.class_id}", "${element.comment}",  "${element.course_id}")`, callback)
         });
 
         answers.forEach(element => {
-            con.query(`INSERT INTO answers(id, student_id, comment_id, answer_comment, answer_accept) values("${element.id}", "${element.student_id}", "${element.comment_id}",  "${element.comment}", "${element.accept}")`, callback)
+            con.query(`INSERT INTO answers(id, student_id, comment_id, answer_comment, answer_accept, class_id, course_id) values("${element.id}", "${element.student_id}", "${element.comment_id}",  "${element.comment}", "${element.accept}", "${element.class_id}", "${element.course_id}")`, callback)
         })
 
         students_classes.forEach(element => {

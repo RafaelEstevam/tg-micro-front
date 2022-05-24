@@ -8,7 +8,7 @@ module.exports = [
         "courses": [
             {"id": 1, "name": "Matemática", "grade": 7.0, "classes" : [
                 {"id": 1, "name": "Equação do 2º grau", "dateOfClass": "2021-04-05", comments: [
-                    {"id": 1, "comment": "Essa equação não serve de nada."}
+                    {"id": 1, "comment": "Essa equação não serve de nada.", "course_id": 1}
                 ], tasks: [
                     {"id": 1, "name": "Dever de casa", "homeWork": false, "dateOfDelivery": "2021-04-05"},
                     {"id": 2, "name": "Atividade avaliativa", "homeWork": true, "grade": 8.0, "dateOfDelivery": "2021-04-05"},
@@ -19,10 +19,10 @@ module.exports = [
                     {"id": 9, "name": "Atividade avaliativa", "homeWork": true, "grade": 9.0, "dateOfDelivery": "2021-07-20"}
                 ], "time": 22},
                 {"id": 2, "name": "Regra de três", "dateOfClass": "2021-04-05", comments: [
-                    {"id": 2, "comment": "Como faço para calcular porcentagem?", answers: [
-                        {"id": 1, "student_id": 2, "comment": "Você pode usar regra de três", "accept": true},
-                        {"id": 2, "student_id": 1, "comment": "A ok, obrigado", "accept": false},
-                        {"id": 3, "student_id": 3, "comment": "Você pode multiplicar o valor total pelo percentual que vc quer descobrir divido por 10. Ex: 100 (total) X (20 (percentual) / 10) = 20", "accept": false},
+                    {"id": 2, "comment": "Como faço para calcular porcentagem?", "course_id": 1, answers: [
+                        {"id": 1, "student_id": 2, "comment": "Você pode usar regra de três", "accept": true, "course_id":1, "class_id": 2},
+                        {"id": 2, "student_id": 1, "comment": "A ok, obrigado", "accept": false, "course_id":1, "class_id": 2},
+                        {"id": 3, "student_id": 3, "comment": "Você pode multiplicar o valor total pelo percentual que vc quer descobrir divido por 10. Ex: 100 (total) X (20 (percentual) / 10) = 20", "accept": false, "course_id":1, "class_id": 2},
                     ] },
                 ], tasks: [], "time": 32},
                 {"id": 3, "name": "Fração", "dateOfClass": "2021-04-06", comments: [], tasks: [], "time": 24},
@@ -58,6 +58,18 @@ module.exports = [
             "email": "aluno2@tg.com"
         },
         "courses": [
+            {"id": 1, "name": "Matemática", "grade": 4.5, "classes" : [
+                {"id": 1, "name": "Equação do 2º grau", "dateOfClass": "2021-04-05", comments: [
+                    {"id": 3, "comment": "Essa equação não serve de nada.", "course_id": 1}
+                ], tasks: [
+                    {"id": 4, "name": "Dever de casa"},
+                    {"id": 5, "name": "Atividade avaliativa"}
+                ], "time": 22},
+                {"id": 2, "name": "Regra de três", "dateOfClass": "2021-04-05", comments: [
+                    {"id": 2, "comment": "Como faço para calcular porcentagem?"},
+                ], tasks: [], "time": 32},
+                {"id": 3, "name": "Fração", "dateOfClass": "2021-04-05", comments: [], tasks: [], "time": 24},
+            ]},
             {"id": 3, "name": "Português", "grade": 7.0, "classes": [
                 {"id": 4, "name": "Ortografia", "dateOfClass": "2021-04-05", comments: [], tasks: [], "time": 22},
                 {"id": 5, "name": "Interpretação de texto", "dateOfClass": "2021-04-05", comments: [], tasks: [], "time": 32},
@@ -103,7 +115,7 @@ module.exports = [
         "courses": [
             {"id": 1, "name": "Matemática", "grade": 7.5, "classes" : [
                 {"id": 1, "name": "Equação do 2º grau", "dateOfClass": "2021-04-05", comments: [
-                    {"id": 3, "comment": "Essa equação não serve de nada."}
+                    {"id": 3, "comment": "Essa equação não serve de nada.", "course_id": 1}
                 ], tasks: [
                     {"id": 4, "name": "Dever de casa"},
                     {"id": 5, "name": "Atividade avaliativa"}

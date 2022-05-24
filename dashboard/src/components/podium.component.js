@@ -72,32 +72,43 @@ const AchievmentsItem = styled('div')`
 `
 
 export default function Podium({ podium }) {
+
+    const first = podium[0];
+    const second = podium[1];
+    const third = podium[2];
+
     return (
         <PodiumComponetn>
             <GamingTitle>Pódio</GamingTitle>
             <StyledPodium>
-                <Tooltip title={podium?.second?.student}>
-                    <StyledSecondPosition>
-                        <AchievmentsItem><img src={avatar2} /></AchievmentsItem>
-                        <Typography className="main-text">2º</Typography>
-                    </StyledSecondPosition>
-                </Tooltip>
+                {second ? (
+                    <Tooltip title={second?.student_name}>
+                        <StyledSecondPosition>
+                            <AchievmentsItem><img src={avatar2} /></AchievmentsItem>
+                            <Typography className="main-text">2º</Typography>
+                        </StyledSecondPosition>
+                    </Tooltip>
+                ) : <div/>}
 
-                <Tooltip title={podium?.first?.student}>
-                    <StyledFirstPosition>
-                        <Star style={{ color: COLORS.light0 }} />
-                        <AchievmentsItem><img src={avatar} /></AchievmentsItem>
-                        <Typography>1º</Typography>
-                    </StyledFirstPosition>
-                </Tooltip>
-
-                <Tooltip title={podium?.third?.student}>
-
-                    <StyledThirdPosition>
-                        <AchievmentsItem><img src={avatar3} /></AchievmentsItem>
-                        <Typography className="main-text">3º</Typography>
-                    </StyledThirdPosition>
-                </Tooltip>
+                {first && (
+                    <Tooltip title={first?.student_name}>
+                        <StyledFirstPosition>
+                            <Star style={{ color: COLORS.light0 }} />
+                            <AchievmentsItem><img src={avatar} /></AchievmentsItem>
+                            <Typography>1º</Typography>
+                        </StyledFirstPosition>
+                    </Tooltip>
+                )}
+                
+                {third ? (
+                    <Tooltip title={third?.student_name}>
+                        <StyledThirdPosition>
+                            <AchievmentsItem><img src={avatar3} /></AchievmentsItem>
+                            <Typography className="main-text">3º</Typography>
+                        </StyledThirdPosition>
+                    </Tooltip>
+                ): <div/>}
+                
 
             </StyledPodium>
         </PodiumComponetn>

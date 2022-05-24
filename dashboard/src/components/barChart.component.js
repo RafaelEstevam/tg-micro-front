@@ -55,7 +55,6 @@ registerShape('interval', 'border-radius', {
 });
 
 const CustomToolTip = ({line}) => {
-    console.log(line);
     return (
         <ToolTipCard>
             <ToolTipData>Dia: {line[0].data.class_dateofclass}</ToolTipData>

@@ -24,6 +24,7 @@ routes.post('/term/new', termController.post);
 routes.get('/term/get/last', termController.getLastTerm);
 
 routes.get('/talk/:from/:to', talkController.getTalkByToFrom);
+routes.post('/getTalksByStudentEmail', talkController.getTalkByStudentEmail);
 
 routes.get('/historics', historicController.getHistorics);
 routes.get('/historics/:user_id', historicController.getHistoricsByUser);
@@ -33,10 +34,9 @@ routes.post('/getClassesByStudentEmailAndCourse', dwController.getClassesByStude
 routes.post('/getCommentsByClassesAndStudentEmail', dwController.getCommentsByClassesAndStudentEmail);
 routes.post('/getTasksByClassesAndStudentEmail', dwController.getTasksByClassesAndStudentEmail);
 routes.post('/getTasksByClass', dwController.getTasksByClass);
-routes.get('/getAnswerByStudentEmail/:email', dwController.getAnswerByStudentEmail);
-routes.get('/getCommentsByStudentEmail/:email', dwController.getCommentsByStudentEmail);
-
-routes.post('/getTalksByStudentEmail', talkController.getTalkByStudentEmail);
+routes.post('/getCommentsByStudentEmailandCourseId', dwController.getCommentsByStudentEmailandCourseId);
+routes.post('/getAnswerByStudentEmailandCourseId', dwController.getAnswerByStudentEmailandCourseId);
+routes.get('/getPodiumByCourseId/:course_id', dwController.getPodiumByCourseId);
 
 routes.get('/students', (req, res) => {
     res.json(students);

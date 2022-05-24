@@ -124,7 +124,6 @@ export const ChatWrapper = () => {
 
     useEffect(() => {
         setMessages(loadMessages);
-        console.log(chat);
     }, [chat])
 
     return (

@@ -7,6 +7,13 @@ import { UsersWebSocket } from '../websocket/user';
 
 let usersWebSocket = new UsersWebSocket();
 
+const scrollDown = () => {
+  const wrapper = document.getElementById("message-wrapper");
+  setTimeout(() => {
+    wrapper.scrollBy(0, document.body.scrollHeight);
+  }, 500)
+}
+
 const chatHook = () => {
   const dispatch = useDispatch();
   const chat = useSelector(state => state.chat);
@@ -62,6 +69,7 @@ const chatHook = () => {
 
       setMessages([...messages, ...[content]]);
       usersWebSocket.emit('send_message', (content));
+      scrollDown();
   };
 
   const getTalk = async () => {
@@ -70,14 +78,13 @@ const chatHook = () => {
       try{
           const {data} = await API.get(`/talk/${from_id}/${to_id}`);
           setMessages(data);
+          scrollDown();
       }catch(e){
           console.log(e)
       }
   }
 
   const filterChatOnline = chatOnline?.filter((item) => {return item["_id"] !== user_id })
-
-
 
   const userIsWriting = (value) => {
     if(value.length > 5){
@@ -99,12 +106,12 @@ const chatHook = () => {
   useEffect(() => {
       if(userMessage.text){
           setMessages([...messages, ...[userMessage]]);
+          scrollDown();
       }
   }, [userMessage]);
 
   useEffect(() => {
       usersWebSocket.on('reload_chat_connection', (params) => {
-          console.log(params);
       });
 
       usersWebSocket.on('recieve_message', (params) => {
@@ -113,7 +120,6 @@ const chatHook = () => {
 
       usersWebSocket.on('user_writing', (params) => {
         setShowUserWriting(true);
-        console.log(params);
       })
       
   }, []);

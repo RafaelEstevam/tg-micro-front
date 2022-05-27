@@ -64,6 +64,8 @@ const getApiAndEmit = socket => {
 app.use(express.json());
 app.use(routes);
 
-etl.executeETL();
+setInterval(() => {
+  etl.executeETL();
+}, 3600000);
 
 module.exports = { server, io, con };

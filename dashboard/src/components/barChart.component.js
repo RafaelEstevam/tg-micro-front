@@ -36,12 +36,12 @@ registerShape('interval', 'border-radius', {
         path.push(['L', points[2].x, points[2].y]);
         path.push(['L', points[3].x, points[3].y]);
         path.push('Z');
-        path = this.parsePath(path); // 将 0 - 1 转化为画布坐标
+        path = this.parsePath(path);
 
         const group = container.addGroup();
         group.addShape('rect', {
             attrs: {
-                x: path[1][1], // 矩形起始点为左上角
+                x: path[1][1],
                 y: path[1][2],
                 width: path[2][1] - path[1][1],
                 height: path[0][2] - path[1][2],
@@ -57,7 +57,7 @@ registerShape('interval', 'border-radius', {
 const CustomToolTip = ({line}) => {
     return (
         <ToolTipCard>
-            <ToolTipData>Dia: {line[0].data.class_dateofclass}</ToolTipData>
+            <ToolTipData>Dia: {moment(line[0].data.class_dateofclass).format("DD/MM/YY")}</ToolTipData>
             <ToolTipData>Min: {line[0].data.class_time} minutos</ToolTipData>
         </ToolTipCard>
     )

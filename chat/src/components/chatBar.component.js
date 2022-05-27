@@ -96,7 +96,7 @@ export const ChatWrapper = ({ theme }) => {
                     <Close />
                 </CustomButton>
             </div>
-            <MessagesWrapper className="main-background">
+            <MessagesWrapper className="main-background" id="message-wrapper">
                 {messages.map((item) => (
                     <MessageItemWrapper key={item} isYou={item.from_id === user_id }>
                         <MessageItem isYou={item.from_id === user_id}>

@@ -7,10 +7,16 @@ const StyledCard = styled(Card)`
     margin-top: ${props => props.mt && '20px'};
 `;
 
+const MobileCustomCard = styled('div')`
+    @media(max-width: 980px){
+        width: 100%;
+    }
+`
+
 export default function CustomCard({ children, height, className, style, mt }) {
     return (
-        <div style={style}>
+        <MobileCustomCard style={style}>
             {children}
-        </div>
+        </MobileCustomCard>
     )
 }

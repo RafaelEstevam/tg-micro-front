@@ -64,7 +64,50 @@ const CustomButton = styled('button')`
         color: ${(props) => props.nightMode ? '#fff' : '#da3941'}
     }
 
-`
+`;
+
+const MobileCustomCard = styled('div')`
+    position: fixed;
+    margin-tpo: 20px;
+    min-height: calc(100vh - 110px);
+    background: ${props => props.nightMode ? COLORS.dark1 : COLORS.light0};
+    border-radius: 20px;
+    @media(max-width: 980px){
+        width: 100%;
+        max-height: 60px;
+        min-height: inherit;
+        bottom: 0px;
+        border-radius: 0px;
+    }
+`;
+
+const MobileCardWrapper = styled('div')`
+    @media(max-width: 980px){
+        flex-direction: row !important;
+        justify-content: flex-start !important;
+        gap: 10px;
+        align-items: center !important;
+    }
+`;
+
+const MobileChatItem = styled('div')`
+    border: 3px solid transparent;
+    border-color: ${props => props.type === 'teacher' ? '#da3941' : '#39A0DA'};
+    border-radius: 100%;
+    @media(max-width: 980px){
+        margin-top: 0px !important;
+        width: 30px !important;
+    }
+`;
+
+const MobileStyledChatWrapper = styled('div')`
+    @media(max-width: 980px){
+        z-index: 1000 !important;
+        right: 23px !important;
+        box-shadow: 0px 0px 6px rgba(0,0,0,0.5);
+        bottom: 60px !important;
+    }
+` 
 
 export const ChatWrapper = ({ theme }) => {
     const { nightMode } = theme;
@@ -86,7 +129,7 @@ export const ChatWrapper = ({ theme }) => {
     } = chatHook();
 
     return (
-        <div className={`StyledChatWrapper ${nightMode && 'nightMode'}`} show={chat.showChat}>
+        <MobileStyledChatWrapper className={`StyledChatWrapper ${nightMode && 'nightMode'}`} show={chat.showChat}>
             <div className="ChatHeader second-background">
                 <CardContent>
                     <p className="primary-text"><b>{chat?.dataChat?.name}</b></p>
@@ -123,7 +166,7 @@ export const ChatWrapper = ({ theme }) => {
                     </CustomButton>
                 </Tooltip>
             </MessageText>
-        </div>
+        </MobileStyledChatWrapper>
     )
 };
 
@@ -146,19 +189,19 @@ export const ChatBar = ({ theme }) => {
 
     return (
         <>
-            <CustomCard className="main-text" style={{ position: 'fixed', marginTop: '20px', minHeight: 'calc(100vh - 110px)', background: `${nightMode ? COLORS.dark1 : COLORS.light0}`, borderRadius: '20px' }}>
-                <div className="CardWrapper">
+            <MobileCustomCard className="main-text" nightMode={nightMode}>
+                <MobileCardWrapper className="CardWrapper">
                     <h6 variant="h6" style={{ color: `${nightMode ? "#fff" : "#666"}` }}>Chat</h6>
 
                     {filterChatOnline?.map((item) => (
                         <Tooltip title={item?.name} key={item?.name}>
-                            <div className="ChatItem" style={{ border: item.type === 'teacher' ? `3px solid #da3941` : `3px solid #39A0DA`, borderRadius: '100%' }} type={item.type} onClick={() => handleDrawerOpen(item)}>
+                            <MobileChatItem className="ChatItem" type={item.type} onClick={() => handleDrawerOpen(item)}>
                                 <img src={avatar} />
-                            </div>
+                            </MobileChatItem>
                         </Tooltip>
                     ))}
-                </div>
-            </CustomCard>
+                </MobileCardWrapper>
+            </MobileCustomCard>
             {showChat && <ChatWrapper theme={theme} />}
 
         </>

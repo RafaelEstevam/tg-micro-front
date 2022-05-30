@@ -6,18 +6,26 @@ import {
   Button
 } from '@material-ui/core';
 import clsx from 'clsx';
-
+import styled from 'styled-components';
 import Parsel from 'single-spa-react/parcel';
 
 import { useSelector } from 'react-redux'
-
 import { HeaderStyle } from '../styles/header';
-
 import { ChatWrapper } from '../components/chatBar.component';
-import { ChatBar } from '../components/chatBar.component';
 
 import Header from '../components/header.component';
-import AccessibilityBar from '../components/acessibilityBar.component';
+
+const MobileGrid = styled(Grid)`
+  @media(max-width: 980px){
+    width: 100%;
+    position: fixed;
+    z-index: 1000;
+  }
+`;
+
+const MobileParsel = styled(Parsel)`
+  width: 100%;
+`
 
 export default function PersistentDrawerLeft({ children }) {
   const classes = HeaderStyle();
@@ -56,14 +64,14 @@ export default function PersistentDrawerLeft({ children }) {
                     {children}
                   </div>
                 </Grid>
-                <Grid item lg={1}>
+                <MobileGrid item lg={1}>
 
-                  <Parsel
+                  <MobileParsel
                     config={() => System.import('@re/chat')}
                   />
 
                   {/* <ChatBar /> */}
-                </Grid>
+                </MobileGrid>
               </Grid>
 
             </div>

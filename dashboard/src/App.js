@@ -22,7 +22,7 @@ const theme = createTheme({
       main: COLORS.primary,
     },
     secondary: {
-      main: COLORS.secondary,
+      main: COLORS.dark1,
     },
     neutral: {
       main: '#64748B',

@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
+import loginImg from '../../assets/login.jpeg';
+import styled from 'styled-components';
+
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch } from 'react-redux';
 import { useSnackbar } from 'notistack';
 // import axios from 'axios';
 import { setTokenInStorage, decodeToken, API, setIdInStorage, setUserDataInStorage } from '../../services/api';
+import {Grid, Card, CardHeader, CardContent, Box} from '@material-ui/core';
 
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -14,6 +18,40 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 
+const LoginWrapper = styled('div')`
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+`
+
+const LoginView = styled('div')`
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  background: url('${loginImg}') center center;
+  background-size: 95%;
+  background-repeat: no-repeat;
+  background-color: #111423;
+  width: 80%;
+  @media(max-width: 980px){
+    display: none;
+  }
+`;
+
+const LoginContainer = styled(Container)`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-bottom: 100px;
+`;
+
+const CustonTitle = styled(Typography)`
+  font-weight: bold;
+  line-height: inherit;
+  span{
+    font-size: 30px;
+  }
+`;
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -43,7 +81,8 @@ export default function SignIn() {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     const data = {
       email,
       password
@@ -58,7 +97,7 @@ export default function SignIn() {
       history.push("/app/dashboard");
 
     } catch (error) {
-      console.log(error)
+      enqueueSnackbar('Não foi possível fazer login. Tente novamente.', {variant: "error"});
     }
 
 
@@ -75,54 +114,55 @@ export default function SignIn() {
   }
 
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign in
-        </Typography>
-        <div className={classes.form}>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            autoFocus
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            autoComplete="current-password"
-          />
+    <LoginWrapper>
+      <LoginView></LoginView>
+      <LoginContainer component="main" maxWidth="xs">
+        <form className={classes.paper} onSubmit={(e) => handleSubmit(e)}>
+          <CustonTitle>
+            <span className="main-text">EDUCA</span>
+            <span className="primary-text">LYTICS</span>
+          </CustonTitle>
+          <div className={classes.form}>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              autoFocus
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoComplete="current-password"
+            />
 
-          <Button
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            onClick={() => handleSubmit()}
-          >
-            Login
-          </Button>
-        </div>
-      </div>
-    </Container>
+            <Button
+              fullWidth
+              variant="contained"
+              color="secondary"
+              type="submit"
+              className={classes.submit}
+            >
+              Login
+            </Button>
+          </div>
+        </form>
+      </LoginContainer>
+    </LoginWrapper>
+    
   );
 }

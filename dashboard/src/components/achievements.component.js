@@ -2,7 +2,7 @@ import react, { useState } from 'react';
 import styled from 'styled-components';
 import avatar from '../assets/avatar.jpg';
 import {GamingTitle} from './styles.component';
-import {Tooltip, IconButton, Button} from '@material-ui/core';
+import {Tooltip, IconButton, Button, Typography} from '@material-ui/core';
 import {EmojiEvents, RemoveRedEye} from '@material-ui/icons';
 import {COLORS} from '../styles/colors';
 import {achievements} from '../services/achievements'
@@ -84,7 +84,7 @@ const ModalBody = styled('div')`
     padding-bottom: 20px;
 `
 
-const ModalTitleLabel = styled('h2')`
+const ModalTitleLabel = styled(Typography)`
     color: ${COLORS.primary};
     font-size: 1.28rem;
 `;
@@ -104,7 +104,7 @@ const Modal = ({show, setShow, metrics}) => {
                 </ModalTitle>
                 <ModalBody>
                     <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px'}}>
-                        <p className='main-text'>Consulte todas as conquistas disponíveis para alcançar.</p>
+                        <Typography className='main-text'>Consulte todas as conquistas disponíveis para alcançar.</Typography>
                         <AchievmentsList>
                             {achievements?.map((item) => (
                                 <Tooltip title={item.title} key={item.title}>

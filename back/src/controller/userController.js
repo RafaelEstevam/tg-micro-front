@@ -35,8 +35,6 @@ module.exports = {
 
     async put(req, res) {
 
-        console.log(req.body);
-
         const { email, password, name, doc, avatar, recieve_sms, recieve_email, show_sensitive_data, term_accept, term_accept_version } = req.body;
         const { id } = req.params;
 
@@ -77,7 +75,8 @@ module.exports = {
         const { email, password } = req.body;
 
         let user = await User.findOne({ email });
-        if (user.email === email && user.password === password) {
+
+        if (user?.email === email && user?.password === password) {
 
             const id = user?._id.valueOf();
             user.password = "";
